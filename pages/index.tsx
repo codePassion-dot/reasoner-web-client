@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import slugify from "slugify";
+import AuthHeader from "../components/AuthHeader";
 import { CONSTANTS } from "../constants";
 
 const Home: NextPage = () => {
@@ -38,15 +39,15 @@ const Home: NextPage = () => {
             )
           }
         >
-          <Tab.List className="flex flex-row gap-4 rounded-tl-2xl rounded-tr-2xl bg-seagull">
+          <Tab.List className="flex gap-4 justify-center items-center rounded-tl-2xl rounded-tr-2xl bg-seagull">
             {CONSTANTS.tabsTexts.map((text, index) => (
               <Tab key={index} as={Fragment}>
                 {({ selected }) => (
                   <span
                     className={
                       selected
-                        ? "bg-cerulean text-white text-xl font-medium py-3 px-16 rounded-t-2xl"
-                        : "bg-seagull text-cloud-burst text-xl py-3 font-medium px-16 rounded-t-2xl"
+                        ? "bg-denim text-center text-white text-xl font-medium basis-1/2 py-3 px-16  rounded-t-2xl"
+                        : "bg-seagull text-center text-cloud-burst text-xl basis-1/2  font-medium px-16 py-3  rounded-t-2xl"
                     }
                   >
                     {text}
@@ -56,8 +57,22 @@ const Home: NextPage = () => {
             ))}
           </Tab.List>
           <Tab.Panels>
-            <Tab.Panel>Content 1</Tab.Panel>
-            <Tab.Panel>Content 2</Tab.Panel>
+            <Tab.Panel>
+              <AuthHeader
+                title="Welcome"
+                description="Please fill your credentials to log into your profile"
+              >
+                <div>this would be the sign in form</div>
+              </AuthHeader>
+            </Tab.Panel>
+            <Tab.Panel>
+              <AuthHeader
+                title="Get Started"
+                description="Join us filling the next form to create your account"
+              >
+                <div>this would be the sign up form</div>
+              </AuthHeader>
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
