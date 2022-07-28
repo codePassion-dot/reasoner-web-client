@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FC } from "react";
-import leftPerson from "../public/auth-left-person.png";
-import rightPerson from "../public/auth-right-person.png";
+import leftPerson from "../public/auth-header-left-person.png";
+import rightPerson from "../public/auth-header-right-person.png";
 import {
   AuthHeaderHorizontalDots,
   AuthHeaderVerticalDots,

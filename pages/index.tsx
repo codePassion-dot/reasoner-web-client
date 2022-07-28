@@ -24,8 +24,8 @@ const Home: NextPage = () => {
   }, [router.isReady, router.query.auth]);
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="w-fit">
+    <div className="grid place-items-center h-screen bg-no-repeat bg-cover bg-default">
+      <div className="rounded-2xl shadow-3xl shadow-white/50 w-fit">
         <Tab.Group
           defaultIndex={0}
           selectedIndex={tab}

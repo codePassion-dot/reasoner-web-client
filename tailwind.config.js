@@ -14,6 +14,12 @@ module.exports = {
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
       },
+      boxShadow: {
+        "3xl": "-1px -1px 24px 3px rgba(0, 0, 0, 0.3)",
+      },
+      backgroundImage: {
+        default: "url('~/public/background.svg')",
+      },
     },
   },
   plugins: [],
