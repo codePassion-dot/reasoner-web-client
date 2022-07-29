@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import slugify from "slugify";
+import AuthFormSignUp from "../components/AuthFormSignUp";
 import AuthHeader from "../components/AuthHeader";
 import { CONSTANTS } from "../constants";
 
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="grid place-items-center h-screen bg-no-repeat bg-cover bg-default">
-      <div className="rounded-2xl shadow-3xl shadow-white/50 w-fit">
+      <div className="rounded-2xl 3xl:w-1/4 4xl:w-1/5 shadow-3xl shadow-white/50">
         <Tab.Group
           defaultIndex={0}
           selectedIndex={tab}
@@ -46,7 +47,7 @@ const Home: NextPage = () => {
                   <span
                     className={
                       selected
-                        ? "bg-denim text-center text-white text-xl font-medium basis-1/2 py-3 px-16  rounded-t-2xl"
+                        ? "bg-denim outline-none text-center text-white text-xl font-medium basis-1/2 py-3 px-16  rounded-t-2xl"
                         : "bg-seagull text-center text-cloud-burst text-xl basis-1/2  font-medium px-16 py-3  rounded-t-2xl"
                     }
                   >
@@ -70,7 +71,7 @@ const Home: NextPage = () => {
                 title="Get Started"
                 description="Join us filling the next form to create your account"
               >
-                <div>this would be the sign up form</div>
+                <AuthFormSignUp />
               </AuthHeader>
             </Tab.Panel>
           </Tab.Panels>

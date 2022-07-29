@@ -10,6 +10,7 @@ module.exports = {
         seagull: "#7EB6D9",
         denim: "#0D5FA6",
         "cloud-burst": "#354050",
+        midnight: "#29323E",
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
@@ -19,6 +20,10 @@ module.exports = {
       },
       backgroundImage: {
         default: "url('~/public/background.svg')",
+      },
+      screens: {
+        "3xl": "1910px",
+        "4xl": "2010px",
       },
     },
   },
