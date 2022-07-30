@@ -6,7 +6,6 @@ interface Props {
   placeholder?: string;
   htmlFor: string;
   icon: React.ReactNode;
-  humanText: string;
 }
 
 const AuthFormInput: FC<Props> = (props) => {

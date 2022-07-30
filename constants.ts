@@ -1,3 +1,3 @@
 export const CONSTANTS = {
-  tabsTexts: ["Sign in", "Sign up"],
+  authText: ["Sign in", "Sign up"],
 };
