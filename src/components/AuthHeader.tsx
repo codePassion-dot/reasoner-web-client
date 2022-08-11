@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { FC } from "react";
-import leftPerson from "../public/auth-header-left-person.png";
-import rightPerson from "../public/auth-header-right-person.png";
 import {
   AuthHeaderHorizontalDots,
   AuthHeaderVerticalDots,
-} from "../public/icons";
+} from "../../public/icons";
+import leftPerson from "../../public/auth-header-left-person.png";
+import rightPerson from "../../public/auth-header-right-person.png";
 interface Props {
   children: React.ReactNode;
   title: string;

@@ -1,10 +1,10 @@
-import AuthLayout from "../../layouts/AuthLayout";
+import type { NextPage } from "next";
 import AuthSignUp from "../../components/AuthSignUp";
-import { NextPage } from "next";
+import AuthLayout from "../../layouts/AuthLayout";
 
 const SignUp: NextPage = () => {
   return (
-    <AuthLayout index={1}>
+    <AuthLayout tabIndex={1}>
       <AuthSignUp />
     </AuthLayout>
   );

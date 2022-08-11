@@ -1,8 +1,8 @@
-import { CONSTANTS } from "../constants";
 import AuthFormGeneric from "./AuthFormGeneric";
 import AuthHeader from "./AuthHeader";
 import { FC } from "react";
 import { getBaseAuthValidation, getBaseFields } from "../utils/auth";
+import { CONSTANTS } from "../constants";
 
 const AuthSignIn: FC = () => {
   const validationSchemaSignIn = getBaseAuthValidation();
