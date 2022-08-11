@@ -54,7 +54,7 @@ const AuthFormGeneric = <T extends unknown>({
                 {buttonText}
               </h3>
             </button>
-            <Link href="/">
+            <Link href="/auth/recover">
               <span className="self-center text-xs font-medium text-white">
                 Forgot password ?
               </span>
