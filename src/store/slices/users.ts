@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserKeys } from "../../types/user";
+import { AUTH_FIELDS } from "../../constants/auth";
+import { UserKeysType } from "../../types/auth";
 
 interface UsersState {
   id: string;
@@ -17,7 +18,7 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<UserKeysType>) => {
       const { id, email, accessToken } = action.payload;
       state.id = id;
       state.email = email;
@@ -29,7 +30,10 @@ export const usersSlice = createSlice({
     },
     updateUser: (
       state,
-      action: PayloadAction<{ property: UserKeys; value: string }>
+      action: PayloadAction<{
+        property: AUTH_FIELDS;
+        value: string;
+      }>
     ) => {
       const { property, value } = action.payload;
       state[property] = value;
