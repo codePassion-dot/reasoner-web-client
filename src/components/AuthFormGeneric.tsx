@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
+import { CONSTANTS } from "../constants";
 import AuthFormInput from "./AuthFormInput";
 
 interface AuthField {
@@ -39,7 +40,7 @@ const AuthFormGeneric = <T extends unknown>({
               <div key={name} className="flex flex-col">
                 <Field as={AuthFormInput} {...rest} name={name} />
                 <ErrorMessage
-                  className="text-white"
+                  className="text-white text-sm text-left pt-1"
                   name={name}
                   component="div"
                 />
@@ -54,11 +55,11 @@ const AuthFormGeneric = <T extends unknown>({
                 {buttonText}
               </h3>
             </button>
-            <Link href="/auth/recover">
-              <span className="self-center text-xs font-medium text-white">
+            {buttonText === CONSTANTS.authButton[0] && (<Link href="/password/recovery">
+              <span className="self-center text-xs font-medium text-white cursor-pointer">
                 Forgot password ?
               </span>
-            </Link>
+            </Link>)}
           </div>
         </Form>
       )}
