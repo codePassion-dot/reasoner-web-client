@@ -16,7 +16,7 @@ const AuthSignIn: FC = () => {
       <AuthFormGeneric
         fields={signInFields}
         validationSchema={validationSchemaSignIn}
-        buttonText={CONSTANTS.authText[0]}
+        buttonText={CONSTANTS.authButton[0]}
       />
     </AuthHeader>
   );

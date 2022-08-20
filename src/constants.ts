@@ -1,3 +1,4 @@
 export const CONSTANTS = {
-  authText: ["Sign in", "Sign up"],
+  authTab: ["Sign in", "Sign up"],
+  authButton: ["Sign in", "Sign up", "Recover"],
 };
