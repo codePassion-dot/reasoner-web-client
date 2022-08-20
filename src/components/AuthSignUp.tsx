@@ -15,7 +15,7 @@ const AuthSignUp: FC = () => {
       <AuthFormGeneric
         fields={signUpFields}
         validationSchema={validationSchemaSignUp}
-        buttonText={CONSTANTS.authText[1]}
+        buttonText={CONSTANTS.authButton[1]}
       />
     </AuthHeader>
   );

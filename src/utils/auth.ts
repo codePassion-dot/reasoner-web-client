@@ -68,3 +68,13 @@ export const getSignUpFields = () => {
     },
   ];
 };
+
+export const getPasswordRecoveryValidation = () => {
+  return Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Required"),
+  });
+};
+
+export const getPasswordRecoveryFields = () => {
+  return getBaseFields().slice(0, 1);
+};

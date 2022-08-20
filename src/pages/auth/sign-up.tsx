@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import AuthSignUp from "../../components/AuthSignUp";
-import AuthLayout from "../../layouts/AuthLayout";
+import AuthTabLayout from "../../layouts/AuthTabLayout";
 
 const SignUp: NextPage = () => {
   return (
-    <AuthLayout tabIndex={1}>
+    <AuthTabLayout tabIndex={1}>
       <AuthSignUp />
-    </AuthLayout>
+    </AuthTabLayout>
   );
 };
 export default SignUp;
