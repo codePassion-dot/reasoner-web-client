@@ -15,7 +15,7 @@ const AuthHeader: FC<Props> = ({ children, title, description }) => {
   return (
     <>
       <div className="flex relative flex-row justify-between pt-9 bg-gradient-to-r from-denim to-cerulean">
-        <Image src={leftPerson} width={142} height={167} alt="leftPerson" />
+        <Image src={leftPerson} width={142} height={167} priority alt="leftPerson" />
         <div className="flex flex-col basis-8/12">
           <h1 className="flex flex-col text-5xl font-bold text-center text-white">
             <span>{title}</span>
@@ -29,6 +29,7 @@ const AuthHeader: FC<Props> = ({ children, title, description }) => {
           height={167}
           alt="rightPerson"
           className="z-10"
+          priority
         />
         <AuthHeaderVerticalDots styles="right-0 top-0 mt-5 absolute z-0 mr-3" />
       </div>

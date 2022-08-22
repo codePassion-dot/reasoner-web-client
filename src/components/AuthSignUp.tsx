@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { CONSTANTS } from "../constants";
+import { REQUEST_TYPE } from "../constants/auth";
+import { UI_BUTTON_TYPE } from "../ui/fields/auth";
 import { getSignUpFields, getSignUpValidation } from "../utils/auth";
 import AuthFormGeneric from "./AuthFormGeneric";
 import AuthHeader from "./AuthHeader";
@@ -15,7 +16,13 @@ const AuthSignUp: FC = () => {
       <AuthFormGeneric
         fields={signUpFields}
         validationSchema={validationSchemaSignUp}
-        buttonText={CONSTANTS.authButton[1]}
+        buttonText={UI_BUTTON_TYPE[1]}
+        requestType={REQUEST_TYPE.SIGN_UP}
+        initialValues={{
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
       />
     </AuthHeader>
   );
