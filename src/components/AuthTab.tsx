@@ -1,8 +1,9 @@
 import { Tab } from "@headlessui/react";
 import { FC } from "react";
 import slugify from "slugify";
-import { CONSTANTS } from "../constants";
+
 import { useRouter } from "next/router";
+import { UI_REQUEST_TYPE } from "../ui/fields/auth";
 
 interface Props {
     children: React.ReactNode;
@@ -21,12 +22,12 @@ const AuthTab: FC<Props> = ({ children, tabIndex }) => {
             selectedIndex={tabIndex}
             onChange={(index: number) =>
                 router.push(
-                    `/auth/${slugify(CONSTANTS.authTab[index], { lower: true })}`
+                    `/auth/${slugify(UI_REQUEST_TYPE[index], { lower: true })}`
                 )
             }
         >
             <Tab.List className="flex justify-center items-center rounded-tl-2xl rounded-tr-2xl bg-seagull">
-                {CONSTANTS.authTab.map((text, index) => (
+                {UI_REQUEST_TYPE.map((text, index) => (
                     <Tab
                         key={`${text}-${index}`}
                         className={({ selected }: { selected: boolean }) =>

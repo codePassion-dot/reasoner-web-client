@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import AuthPasswordReset from "../../components/AuthPasswordReset";
-import AuthHeaderLayout from "../../layouts/AuthHeaderLayout";
+import AuthPasswordReset from "../../../components/AuthPasswordReset";
+import AuthHeaderLayout from "../../../layouts/AuthHeaderLayout";
 
 const PasswordReset: NextPage = () => {
   return (
