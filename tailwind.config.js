@@ -19,8 +19,17 @@ module.exports = {
         default: "url('~/public/background.svg')",
       },
       screens: {
+        sm: "640px",
+        md: "768px",
+        "2xl": "1536px",
         "3xl": "1910px",
         "4xl": "2010px",
+      },
+      height: {
+        54: "13.625rem",
+      },
+      width: {
+        86: "22.25rem",
       },
     },
   },
