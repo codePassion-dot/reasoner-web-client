@@ -1,5 +1,6 @@
 import { BiLock, BiUser } from "react-icons/bi";
 import * as Yup from "yup";
+import { ResponseResourceType } from "../types/auth";
 
 const passwordValidation = Yup.string()
   .min(8, "Too short")
@@ -92,4 +93,10 @@ export const getPasswordResetValidation = () => {
 
 export const getPasswordResetFields = () => {
   return [passwordField, confirmPasswordField];
+};
+
+export const isAccessTokenResource = (
+  resource: ResponseResourceType
+): resource is { accessToken: string } => {
+  return (resource as { accessToken: string }).accessToken !== undefined;
 };

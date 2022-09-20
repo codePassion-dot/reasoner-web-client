@@ -4,7 +4,8 @@ import StepOne from "../../components/WizardStepOne";
 import WizardLayout from "../../layouts/WizardLayout";
 
 const PasswordRecovery: NextPage = () => {
-  const description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod?';
+  const description =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod?";
   return (
     <WizardLayout title="Database">
       <div className="flex flex-row gap-4">

@@ -4,7 +4,8 @@ import axios, { AxiosResponse } from "axios";
 
 export const makeRequest = async (
   requestType: REQUEST_TYPE,
-  body: WizardFieldsType
+  body: WizardFieldsType,
+  accessToken: string
 ): Promise<{
   error: { code: string; detail: { [key: string]: string[] } | string };
 }> => {
@@ -18,14 +19,24 @@ export const makeRequest = async (
         `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
       );
 
-      response = await axios.post(url.toString(), body);
+      response = await axios.post(url.toString(), body, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
     }
     if (requestType === REQUEST_TYPE.SCHEMA) {
       const url = new URL(
         `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
       );
 
-      response = await axios.patch(url.toString(), body);
+      response = await axios.patch(url.toString(), body, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
     }
 
     return { error: response.data.error };
