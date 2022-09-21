@@ -2,8 +2,9 @@ import type { NextPage } from "next";
 import WizardBoxDetail from "../../components/WizardBoxDetail";
 import StepOne from "../../components/WizardStepOne";
 import WizardLayout from "../../layouts/WizardLayout";
+import WithAuthentication from "../../components/WithAuthentication";
 
-const PasswordRecovery: NextPage = () => {
+const SourceSelection: NextPage = () => {
   const description =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod?";
   return (
@@ -16,4 +17,4 @@ const PasswordRecovery: NextPage = () => {
   );
 };
 
-export default PasswordRecovery;
+export default WithAuthentication(SourceSelection);
