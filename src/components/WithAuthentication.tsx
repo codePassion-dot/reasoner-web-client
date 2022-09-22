@@ -1,20 +1,12 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../store/selectors/users";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import useUser from "../hooks/useUser";
 
 const WithAuthentication = <T,>(WrappedComponent: React.ComponentType<T>) => {
   const ComponentWithAuthentication = (props: T) => {
-    // TODO: we should do this but with the refresh token instead
-    const user = useSelector(selectUser);
-    const router = useRouter();
-    useEffect(() => {
-      if (!user.accessToken) {
-        router.replace("/auth/sign-in");
-      }
-    }, [router, user.accessToken]);
-
-    return <WrappedComponent {...props} />;
+    const { loading, user } = useUser({ redirectTo: "/auth/sign-in" });
+    if (loading || !user) {
+      return <div>Loading...</div>;
+    }
+    return <WrappedComponent {...props} userId={user} />;
   };
   return ComponentWithAuthentication;
 };
