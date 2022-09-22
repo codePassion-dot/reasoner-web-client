@@ -14,36 +14,31 @@ export const baseAuthenticatedInstance = axios.create({
   },
 });
 
-export const authenticatedInstance = axios
-  .create({
-    ...baseAuthenticatedInstance.options,
-  })
-  .interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    async (error) => {
-      const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        const url = new URL(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`
-        );
-        const response = await axios.post(url.toString(), undefined, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-        const accessToken = response.data.accessToken;
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-        const _store = injectStore(store);
-        _store.dispatch({
-          type: "users/updateUser",
-          payload: { property: AUTH_FIELDS.ACCESS_TOKEN, value: accessToken },
-        });
-        return axios(originalRequest);
-      }
-      return Promise.reject(error);
+export const authenticatedInstance = axios.create({
+  ...baseAuthenticatedInstance.options,
+});
+
+authenticatedInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`
+      );
+      const response = await axios.get(url.toString());
+      const { accessToken } = response.data.resource;
+      originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+      const _store = injectStore(store);
+      _store.dispatch({
+        type: "users/setUser",
+        payload: { accessToken },
+      });
+      return axios(originalRequest);
     }
-  );
+    return Promise.reject(error);
+  }
+);

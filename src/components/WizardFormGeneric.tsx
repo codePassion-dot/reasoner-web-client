@@ -39,11 +39,27 @@ const WizardFormGeneric = <T extends unknown>({
   ) => {
     setSubmitting(true);
     const { error } = await makeRequest(requestType, values, user.accessToken);
-    router.push("/");
+    alert("you did it!");
     setSubmitting(false);
   };
   const firstFourFields = fields.slice(0, 5);
   const restOfFields = fields.slice(5);
+
+  const FieldItem = ({ name, isSubmitting, WizardFormInput, rest }) => (
+    <div key={name}>
+      <Field
+        as={WizardFormInput}
+        {...rest}
+        name={name}
+        isSubmitting={isSubmitting}
+      />
+      <ErrorMessage
+        className="text-white text-xs text-left "
+        name={name}
+        component="div"
+      />
+    </div>
+  );
   return (
     <Formik
       initialValues={initialValues}
@@ -55,36 +71,24 @@ const WizardFormGeneric = <T extends unknown>({
           <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-3">
               {firstFourFields.map(({ name, ...rest }: WizardField) => (
-                <div key={name}>
-                  <Field
-                    as={WizardFormInput}
-                    {...rest}
-                    name={name}
-                    isSubmitting={isSubmitting}
-                  />
-                  <ErrorMessage
-                    className="text-white text-xs text-left "
-                    name={name}
-                    component="div"
-                  />
-                </div>
+                <FieldItem
+                  key={name}
+                  name={name}
+                  isSubmitting={isSubmitting}
+                  WizardFormInput={WizardFormInput}
+                  rest={rest}
+                />
               ))}
             </div>
             <div>
               {restOfFields.map(({ name, ...rest }: WizardField) => (
-                <div key={name}>
-                  <Field
-                    as={WizardFormInput}
-                    {...rest}
-                    name={name}
-                    isSubmitting={isSubmitting}
-                  />
-                  <ErrorMessage
-                    className="text-white text-xs text-left "
-                    name={name}
-                    component="div"
-                  />
-                </div>
+                <FieldItem
+                  key={name}
+                  name={name}
+                  isSubmitting={isSubmitting}
+                  WizardFormInput={WizardFormInput}
+                  rest={rest}
+                />
               ))}
               <button
                 type="submit"

@@ -1,6 +1,7 @@
 import { REQUEST_TYPE } from "../constants/wizard";
 import { WizardFieldsType } from "../types/wizard";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import { authenticatedInstance } from "../utils/api";
 
 export const makeRequest = async (
   requestType: REQUEST_TYPE,
@@ -19,7 +20,7 @@ export const makeRequest = async (
         `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
       );
 
-      response = await axios.post(url.toString(), body, {
+      response = await authenticatedInstance.post(url.toString(), body, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -31,7 +32,7 @@ export const makeRequest = async (
         `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
       );
 
-      response = await axios.patch(url.toString(), body, {
+      response = await authenticatedInstance.patch(url.toString(), body, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
