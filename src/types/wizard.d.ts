@@ -22,6 +22,26 @@ export type StepDetailsType = {
     description: string;
   };
 };
+export type WizardField = {
+  name: string;
+  placeholder: string;
+  icon: React.ReactNode;
+  type: string | boolean;
+  htmlFor: string;
+};
+
+export type FieldType = {
+  name: string;
+  isSubmitting: boolean;
+  WizardFormInput: React.FC<
+    Pick<WizardField, name, icon, htmlFor> & {
+      isSubmitting: boolean;
+      type: string;
+      placeholder?: string;
+    }
+  >;
+  rest: Partial<WizardField>;
+};
 
 export type WizardFieldsType =
   | DatabaseFieldsType

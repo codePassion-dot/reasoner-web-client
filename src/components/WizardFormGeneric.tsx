@@ -4,17 +4,9 @@ import { makeRequest } from "../services/wizard";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { useRouter } from "next/router";
 import WizardFormInput from "./WizardFormInput";
-import { WizardFieldsType } from "../types/wizard";
+import { FieldType, WizardField, WizardFieldsType } from "../types/wizard";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/selectors/users";
-
-interface WizardField {
-  name: string;
-  placeholder: string;
-  icon: React.ReactNode;
-  type: string | boolean;
-  htmlFor: string;
-}
 
 interface Props<T> {
   validationSchema: T;
@@ -45,7 +37,12 @@ const WizardFormGeneric = <T extends unknown>({
   const firstFourFields = fields.slice(0, 5);
   const restOfFields = fields.slice(5);
 
-  const FieldItem = ({ name, isSubmitting, WizardFormInput, rest }) => (
+  const FieldItem = ({
+    name,
+    isSubmitting,
+    WizardFormInput,
+    rest,
+  }: FieldType) => (
     <div key={name}>
       <Field
         as={WizardFormInput}
