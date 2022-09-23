@@ -1,6 +1,5 @@
 import axios from "axios";
 import store from "../store";
-import { AUTH_FIELDS } from "../constants/auth";
 
 axios.defaults.withCredentials = true;
 

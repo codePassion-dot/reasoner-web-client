@@ -60,7 +60,7 @@ const AuthFormGeneric = <T extends unknown>({
           accessToken: resource.accessToken,
         })
       );
-      return router.push("/wizard/step-one");
+      return router.push("/wizard/source");
     }
   };
   return (

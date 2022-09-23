@@ -16,6 +16,13 @@ export type AlgorithmFieldsType = {
   Algorithm: string;
 };
 
+export type StepDetailsType = {
+  [key: string]: {
+    title: string;
+    description: string;
+  };
+};
+
 export type WizardFieldsType =
   | DatabaseFieldsType
   | SchemaFieldsType

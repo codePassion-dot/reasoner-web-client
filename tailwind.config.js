@@ -8,6 +8,7 @@ module.exports = {
         denim: "#0D5FA6",
         "cloud-burst": "#354050",
         midnight: "#29323E",
+        whisper: "#E5E5E5",
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
