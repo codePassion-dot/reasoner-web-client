@@ -7,6 +7,9 @@ import WizardFormInput from "./WizardFormInput";
 import { FieldType, WizardField, WizardFieldsType } from "../types/wizard";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/selectors/users";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { handleNext } from "../store/slices/wizard";
+import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
 
 interface Props<T> {
   validationSchema: T;
@@ -25,13 +28,19 @@ const WizardFormGeneric = <T extends unknown>({
 }: Props<T>) => {
   const router = useRouter();
   const user = useSelector(selectUser);
+  const steps = useAppSelector(selectSteps);
+  const activeStepIdx = useAppSelector(selectActiveStepIdx);
+  const dispatch = useAppDispatch();
   const handleSubmit = async (
     values: WizardFieldsType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
     const { error } = await makeRequest(requestType, values, user.accessToken);
-    alert("you did it!");
+    if (!error) {
+      dispatch(handleNext());
+      router.push(`/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`);
+    }
     setSubmitting(false);
   };
   const firstFourFields = fields.slice(0, 5);
@@ -64,7 +73,7 @@ const WizardFormGeneric = <T extends unknown>({
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <Form>
+        <Form id="wizard">
           <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-3">
               {firstFourFields.map(({ name, ...rest }: WizardField) => (
@@ -87,16 +96,6 @@ const WizardFormGeneric = <T extends unknown>({
                   rest={rest}
                 />
               ))}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="self-center px-4 rounded-3xl w-fit bg-cerulean"
-              >
-                <h3 className="flex flex-row gap-2 items-center text-2xl italic font-bold text-white">
-                  {isSubmitting && <CgSpinnerTwoAlt className="animate-spin" />}
-                  {buttonText}
-                </h3>
-              </button>
             </div>
           </div>
         </Form>

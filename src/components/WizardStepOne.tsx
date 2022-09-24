@@ -4,7 +4,6 @@ import { getDatabaseFields, getDatabaseValidation } from "../utils/wizard";
 import { UI_BUTTON_TYPE } from "../ui/fields/auth";
 import { REQUEST_TYPE } from "../constants/wizard";
 
-
 const StepOne: FC = () => {
   const validationSchema = getDatabaseValidation();
   const Fields = getDatabaseFields();

@@ -34,7 +34,7 @@ export type FieldType = {
   name: string;
   isSubmitting: boolean;
   WizardFormInput: React.FC<
-    Pick<WizardField, name, icon, htmlFor> & {
+    Pick<WizardField, "name" | "icon" | "htmlFor"> & {
       isSubmitting: boolean;
       type: string;
       placeholder?: string;

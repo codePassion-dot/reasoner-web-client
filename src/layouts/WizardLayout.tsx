@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 import { BiChevronLeftCircle, BiChevronRightCircle } from "react-icons/bi";
 import { STEP_NAMES } from "../constants/wizard";
 import { classNames } from "../utils/common";
@@ -6,28 +6,31 @@ import { classNames } from "../utils/common";
 interface Props {
   children: React.ReactNode;
   step: string;
-  handlePrev: () => void;
-  handleNext: () => void;
   idxActiveStep: number;
+  handlePrev: () => void;
 }
 
 const WizardLayout: FC<Props> = ({
   children,
   step,
-  handlePrev,
-  handleNext,
   idxActiveStep,
+  handlePrev,
 }) => {
-  const icons = [
+  const icons: {
+    icon: JSX.Element;
+    type: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    onClick?: ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
+  }[] = [
     {
       icon: <BiChevronRightCircle className="text-whisper h-10 w-10" />,
-      action: handleNext,
+      type: "submit",
     },
   ];
   if (idxActiveStep > 0) {
     icons.unshift({
       icon: <BiChevronLeftCircle className="text-whisper h-10 w-10" />,
-      action: handlePrev,
+      type: "button",
+      onClick: handlePrev,
     });
   }
   return (
@@ -45,8 +48,8 @@ const WizardLayout: FC<Props> = ({
             idxActiveStep === 0 ? "justify-end" : "justify-between"
           )}
         >
-          {icons.map(({ icon, action }, idx) => (
-            <button onClick={action} key={idx}>
+          {icons.map(({ icon, type, onClick }, idx) => (
+            <button type={type} onClick={onClick} form="wizard" key={idx}>
               {icon}
             </button>
           ))}
