@@ -1,8 +1,19 @@
 export type UserKeysType = {
-  id: string;
-  email: string;
   accessToken: string;
 };
+
+export type ResponseType = {
+  resource: { accessToken: string } | { id: string; email: string } | null;
+  error: {
+    code: string;
+    detail: { [key: string]: string[] } | string;
+  } | null;
+};
+
+export type ResponseResourceType =
+  | { accessToken: string }
+  | { id: string; email: string }
+  | null;
 
 export type SignInFieldsType = {
   email: string;

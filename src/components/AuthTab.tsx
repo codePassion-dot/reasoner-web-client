@@ -4,15 +4,14 @@ import slugify from "slugify";
 
 import { useRouter } from "next/router";
 import { UI_REQUEST_TYPE } from "../ui/fields/auth";
+import { classNames } from "../utils/common";
 
 interface Props {
     children: React.ReactNode;
     tabIndex?: number;
 }
 
-const classNames = (...classes: string[]) => {
-    return classes.filter(Boolean).join(" ");
-};
+
 
 const AuthTab: FC<Props> = ({ children, tabIndex }) => {
     const router = useRouter();
