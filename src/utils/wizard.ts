@@ -7,11 +7,16 @@ import {
   BiShieldAlt2,
 } from "react-icons/bi";
 import * as Yup from "yup";
+import AppInputSelect from "../components/AppInputSelect";
+import { WizardField } from "../types/wizard";
 
 export const getDatabaseValidation = () => {
   return Yup.object().shape({
     host: Yup.string().required("Required"),
-    port: Yup.string().required("Required"),
+    port: Yup.number()
+      .positive("the port must be a positive number")
+      .required("Required")
+      .typeError("the port must be a number"),
     database: Yup.string().required("Required"),
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
@@ -19,7 +24,7 @@ export const getDatabaseValidation = () => {
   });
 };
 
-export const getDatabaseFields = () => {
+export const getDatabaseFields = (): WizardField[] => {
   return [
     {
       name: "host",
@@ -27,6 +32,7 @@ export const getDatabaseFields = () => {
       icon: BiLinkAlt({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "host",
+      inputComponentType: "default",
     },
     {
       name: "port",
@@ -34,6 +40,7 @@ export const getDatabaseFields = () => {
       icon: BiBullseye({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "port",
+      inputComponentType: "default",
     },
     {
       name: "database",
@@ -41,6 +48,7 @@ export const getDatabaseFields = () => {
       icon: BiData({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "database",
+      inputComponentType: "default",
     },
     {
       name: "username",
@@ -48,6 +56,7 @@ export const getDatabaseFields = () => {
       icon: BiUser({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "username",
+      inputComponentType: "default",
     },
     {
       name: "password",
@@ -55,13 +64,19 @@ export const getDatabaseFields = () => {
       icon: BiLock({ className: "text-2xl text-white" }),
       type: "password",
       htmlFor: "password",
+      inputComponentType: "default",
     },
     {
       name: "ssl",
-      placeholder: "Enter your database",
+      placeholder: "Select your ssl option",
       icon: BiShieldAlt2({ className: "text-2xl text-white" }),
-      type: "text",
+      type: "select",
+      options: [
+        { id: 1, humanText: "yes", value: true },
+        { id: 2, humanText: "no", value: false },
+      ],
       htmlFor: "ssl",
+      inputComponentType: "select",
     },
   ];
 };

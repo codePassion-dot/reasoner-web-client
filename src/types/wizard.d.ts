@@ -1,3 +1,5 @@
+import { AppInputSelectType } from "./common";
+
 export type DatabaseFieldsType = {
   host: string;
   port: string;
@@ -28,18 +30,23 @@ export type WizardField = {
   icon: React.ReactNode;
   type: string | boolean;
   htmlFor: string;
+  options?: { id: number; humanText: string; value: boolean }[];
+  inputComponentType: string;
 };
 
 export type FieldType = {
   name: string;
   isSubmitting: boolean;
-  WizardFormInput: React.FC<
-    Pick<WizardField, "name" | "icon" | "htmlFor"> & {
-      isSubmitting: boolean;
-      type: string;
-      placeholder?: string;
-    }
-  >;
+  CustomInput?:
+    | React.FC<
+        Pick<WizardField, "name" | "icon" | "htmlFor"> & {
+          isSubmitting: boolean;
+          type: string;
+          placeholder?: string;
+        }
+      >
+    | AppInputSelectType;
+  inputComponentType: string;
   rest: Partial<WizardField>;
 };
 

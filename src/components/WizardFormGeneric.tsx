@@ -10,6 +10,7 @@ import { selectUser } from "../store/selectors/users";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { handleNext } from "../store/slices/wizard";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
+import AppInputSelect from "./AppInputSelect";
 
 interface Props<T> {
   validationSchema: T;
@@ -49,23 +50,27 @@ const WizardFormGeneric = <T extends unknown>({
   const FieldItem = ({
     name,
     isSubmitting,
-    WizardFormInput,
+    inputComponentType,
     rest,
-  }: FieldType) => (
-    <div key={name}>
-      <Field
-        as={WizardFormInput}
-        {...rest}
-        name={name}
-        isSubmitting={isSubmitting}
-      />
-      <ErrorMessage
-        className="text-white text-xs text-left "
-        name={name}
-        component="div"
-      />
-    </div>
-  );
+  }: FieldType) => {
+    return (
+      <div key={name}>
+        <Field
+          component={
+            inputComponentType === "select" ? AppInputSelect : WizardFormInput
+          }
+          {...rest}
+          name={name}
+          isSubmitting={isSubmitting}
+        />
+        <ErrorMessage
+          className="text-white text-xs text-left "
+          name={name}
+          component="div"
+        />
+      </div>
+    );
+  };
   return (
     <Formik
       initialValues={initialValues}
@@ -76,26 +81,30 @@ const WizardFormGeneric = <T extends unknown>({
         <Form id="wizard">
           <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-3">
-              {firstFourFields.map(({ name, ...rest }: WizardField) => (
-                <FieldItem
-                  key={name}
-                  name={name}
-                  isSubmitting={isSubmitting}
-                  WizardFormInput={WizardFormInput}
-                  rest={rest}
-                />
-              ))}
+              {firstFourFields.map(
+                ({ name, inputComponentType, ...rest }: WizardField) => (
+                  <FieldItem
+                    key={name}
+                    name={name}
+                    isSubmitting={isSubmitting}
+                    inputComponentType={inputComponentType}
+                    rest={rest}
+                  />
+                )
+              )}
             </div>
             <div>
-              {restOfFields.map(({ name, ...rest }: WizardField) => (
-                <FieldItem
-                  key={name}
-                  name={name}
-                  isSubmitting={isSubmitting}
-                  WizardFormInput={WizardFormInput}
-                  rest={rest}
-                />
-              ))}
+              {restOfFields.map(
+                ({ name, inputComponentType, ...rest }: WizardField) => (
+                  <FieldItem
+                    key={name}
+                    name={name}
+                    isSubmitting={isSubmitting}
+                    inputComponentType={inputComponentType}
+                    rest={rest}
+                  />
+                )
+              )}
             </div>
           </div>
         </Form>

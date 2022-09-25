@@ -9,6 +9,7 @@ module.exports = {
         "cloud-burst": "#354050",
         midnight: "#29323E",
         whisper: "#E5E5E5",
+        "east-bay": "#465469",
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],

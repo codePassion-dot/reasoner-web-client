@@ -20,6 +20,7 @@ const Step: NextPage = () => {
   const stepKey = typeof step === "string" ? step.toUpperCase() : "SOURCE";
   const steps = useAppSelector(selectSteps);
   const activeStepIdx = useAppSelector(selectActiveStepIdx);
+
   const dispatch = useAppDispatch();
 
   const components: { [key: string]: JSX.Element } = {
