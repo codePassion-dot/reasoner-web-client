@@ -1,6 +1,6 @@
-import { BsPerson } from "react-icons/bs";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { BiLock, BiUser } from "react-icons/bi";
 import * as Yup from "yup";
+import { ResponseResourceType } from "../types/auth";
 
 const passwordValidation = Yup.string()
   .min(8, "Too short")
@@ -31,7 +31,7 @@ const confirmPasswordValidation = Yup.string()
 const passwordField = {
   name: "password",
   placeholder: "Enter your password",
-  icon: RiLockPasswordLine({ className: "text-2xl text-white" }),
+  icon: BiLock({ className: "text-2xl text-white" }),
   type: "password",
   htmlFor: "password",
 };
@@ -39,7 +39,7 @@ const passwordField = {
 const confirmPasswordField = {
   name: "confirmPassword",
   placeholder: "Confirm your password",
-  icon: RiLockPasswordLine({ className: "text-2xl text-white" }),
+  icon: BiLock({ className: "text-2xl text-white" }),
   type: "password",
   htmlFor: "confirmPassword",
 };
@@ -62,7 +62,7 @@ export const getBaseFields = () => {
     {
       name: "email",
       placeholder: "Enter your email",
-      icon: BsPerson({ className: "text-2xl text-white" }),
+      icon: BiUser({ className: "text-2xl text-white" }),
       type: "email",
       htmlFor: "email",
     },
@@ -93,4 +93,10 @@ export const getPasswordResetValidation = () => {
 
 export const getPasswordResetFields = () => {
   return [passwordField, confirmPasswordField];
+};
+
+export const isAccessTokenResource = (
+  resource: ResponseResourceType
+): resource is { accessToken: string } => {
+  return (resource as { accessToken: string }).accessToken !== undefined;
 };

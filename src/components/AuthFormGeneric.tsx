@@ -7,6 +7,9 @@ import AuthFormInput from "./AuthFormInput";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { useRouter } from "next/router";
 import { UI_BUTTON_TYPE } from "../ui/fields/auth";
+import { useAppDispatch } from "../hooks/redux";
+import { setUser } from "../store/slices/users";
+import { isAccessTokenResource } from "../utils/auth";
 
 interface AuthField {
   name: string;
@@ -34,16 +37,31 @@ const AuthFormGeneric = <T extends unknown>({
   urlQuery,
 }: Props<T>) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const handleSubmit = async (
     values: AuthFieldsType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
-    const { error } = await makeRequest(requestType, values, urlQuery);
-    if (!error) {
-      router.push("/auth/sign-in");
-    }
+    const { error, resource } = await makeRequest(
+      requestType,
+      values,
+      urlQuery
+    );
     setSubmitting(false);
+    if (error) return;
+
+    if (requestType !== REQUEST_TYPE.SIGN_IN)
+      return router.push("/auth/sign-in");
+
+    if (isAccessTokenResource(resource)) {
+      dispatch(
+        setUser({
+          accessToken: resource.accessToken,
+        })
+      );
+      return router.push("/wizard/source");
+    }
   };
   return (
     <Formik
@@ -79,11 +97,13 @@ const AuthFormGeneric = <T extends unknown>({
                 {buttonText}
               </h3>
             </button>
-            {buttonText === UI_BUTTON_TYPE[0] && (<Link href="/auth/password/recovery">
-              <span className="self-center text-xs font-medium text-white cursor-pointer">
-                Forgot password ?
-              </span>
-            </Link>)}
+            {buttonText === UI_BUTTON_TYPE[0] && (
+              <Link href="/auth/password/recovery">
+                <span className="self-center text-xs font-medium text-white cursor-pointer">
+                  Forgot password ?
+                </span>
+              </Link>
+            )}
           </div>
         </Form>
       )}

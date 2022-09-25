@@ -1,17 +1,16 @@
 import { REQUEST_TYPE } from "../constants/auth";
-import { AuthFieldsType } from "../types/auth";
+import { AuthFieldsType, ResponseType } from "../types/auth";
 import axios, { AxiosResponse } from "axios";
 
 export const makeRequest = async (
   requestType: REQUEST_TYPE,
   body: AuthFieldsType,
   urlQuery?: Record<string, string>
-): Promise<{
-  error: { code: string; detail: { [key: string]: string[] } | string };
-}> => {
+): Promise<ResponseType> => {
   try {
     let response = { data: {} } as AxiosResponse<{
       error: { code: string; detail: { [key: string]: string[] } | string };
+      resource: any;
     }>;
     if (
       requestType === REQUEST_TYPE.SIGN_IN ||
@@ -42,8 +41,14 @@ export const makeRequest = async (
 
       response = await axios.patch(url.toString(), body);
     }
-    return { error: response.data.error };
+    return response.data;
   } catch (error) {
-    return { error: { code: "unexpected_error", detail: "Unexpected error" } };
+    return {
+      error: {
+        code: "unexpected_error",
+        detail: "Unexpected error",
+      },
+      resource: null,
+    };
   }
 };
