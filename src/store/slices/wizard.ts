@@ -27,7 +27,7 @@ const initialState: {
       key: "SCHEMA_AND_TABLE",
       label: STEP_NAMES.SCHEMA_AND_TABLE,
       isDone: false,
-      component: "stepOne",
+      component: "stepTwo",
       idx: 1,
       requestType: REQUEST_TYPE.SCHEMA,
     },

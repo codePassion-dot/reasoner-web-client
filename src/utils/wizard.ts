@@ -5,9 +5,15 @@ import {
   BiData,
   BiBullseye,
   BiShieldAlt2,
+  BiShapeSquare,
+  BiTable,
 } from "react-icons/bi";
 import * as Yup from "yup";
+import AppInputAutocomplete from "../components/AppInputAutocomplete";
 import AppInputSelect from "../components/AppInputSelect";
+import WizardFormInput from "../components/WizardFormInput";
+import { REQUEST_TYPE } from "../constants/wizard";
+import { makeRequest } from "../services/wizard";
 import { WizardField } from "../types/wizard";
 
 export const getDatabaseValidation = () => {
@@ -32,7 +38,7 @@ export const getDatabaseFields = (): WizardField[] => {
       icon: BiLinkAlt({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "host",
-      inputComponentType: "default",
+      inputComponent: WizardFormInput,
     },
     {
       name: "port",
@@ -40,7 +46,7 @@ export const getDatabaseFields = (): WizardField[] => {
       icon: BiBullseye({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "port",
-      inputComponentType: "default",
+      inputComponent: WizardFormInput,
     },
     {
       name: "database",
@@ -48,7 +54,7 @@ export const getDatabaseFields = (): WizardField[] => {
       icon: BiData({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "database",
-      inputComponentType: "default",
+      inputComponent: WizardFormInput,
     },
     {
       name: "username",
@@ -56,7 +62,7 @@ export const getDatabaseFields = (): WizardField[] => {
       icon: BiUser({ className: "text-2xl text-white" }),
       type: "text",
       htmlFor: "username",
-      inputComponentType: "default",
+      inputComponent: WizardFormInput,
     },
     {
       name: "password",
@@ -64,7 +70,7 @@ export const getDatabaseFields = (): WizardField[] => {
       icon: BiLock({ className: "text-2xl text-white" }),
       type: "password",
       htmlFor: "password",
-      inputComponentType: "default",
+      inputComponent: WizardFormInput,
     },
     {
       name: "ssl",
@@ -76,7 +82,50 @@ export const getDatabaseFields = (): WizardField[] => {
         { id: 2, humanText: "no", value: false },
       ],
       htmlFor: "ssl",
-      inputComponentType: "select",
+      inputComponent: AppInputSelect,
+    },
+  ];
+};
+
+export const getSchemaValidation = () => {
+  return Yup.object().shape({
+    schema: Yup.string().required("Required"),
+    table: Yup.string().required("Required"),
+  });
+};
+
+const getSchemas = async (accessToken: string) => {
+  const { resource } = await makeRequest({
+    requestType: REQUEST_TYPE.SCHEMA_GET,
+    accessToken,
+  });
+  return resource?.map(({ schemaName }, index) => ({
+    id: index,
+    humanText: schemaName,
+    value: schemaName,
+  }));
+};
+
+export const getSchemaFields = async (
+  accessToken?: string
+): Promise<WizardField[]> => {
+  return [
+    {
+      name: "schema",
+      placeholder: "Select your schema",
+      icon: BiShapeSquare({ className: "text-2xl text-white" }),
+      type: "select",
+      htmlFor: "ssl",
+      inputComponent: AppInputAutocomplete,
+    },
+    {
+      name: "table",
+      placeholder: "Select your table",
+      icon: BiTable({ className: "text-2xl text-white" }),
+      type: "select",
+      options: await getSchemas(accessToken ?? ""),
+      htmlFor: "ssl",
+      inputComponent: AppInputAutocomplete,
     },
   ];
 };

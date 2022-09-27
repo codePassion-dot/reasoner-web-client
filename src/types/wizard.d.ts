@@ -1,4 +1,9 @@
-import { AppInputSelectType } from "./common";
+import { FC } from "react";
+import {
+  AppInputAutocompleteType,
+  AppInputSelectType,
+  ErrorResponseType,
+} from "./common";
 
 export type DatabaseFieldsType = {
   host: string;
@@ -9,6 +14,12 @@ export type DatabaseFieldsType = {
   ssl: boolean;
 };
 
+export type MakeRequestType = {
+  requestType: REQUEST_TYPE;
+  body?: WizardFieldsType;
+  accessToken: string;
+};
+
 export type SchemaFieldsType = {
   schema: string;
   table: string;
@@ -16,6 +27,11 @@ export type SchemaFieldsType = {
 
 export type AlgorithmFieldsType = {
   Algorithm: string;
+};
+
+export type ResponseType = {
+  resource: { schemaName: string }[] | null;
+  error: ErrorResponseType;
 };
 
 export type StepDetailsType = {
@@ -30,14 +46,8 @@ export type WizardField = {
   icon: React.ReactNode;
   type: string | boolean;
   htmlFor: string;
-  options?: { id: number; humanText: string; value: boolean }[];
-  inputComponentType: string;
-};
-
-export type FieldType = {
-  name: string;
-  isSubmitting: boolean;
-  CustomInput?:
+  options?: { id: number; humanText: string; value: any }[];
+  inputComponent:
     | React.FC<
         Pick<WizardField, "name" | "icon" | "htmlFor"> & {
           isSubmitting: boolean;
@@ -45,8 +55,23 @@ export type FieldType = {
           placeholder?: string;
         }
       >
-    | AppInputSelectType;
-  inputComponentType: string;
+    | AppInputSelectType
+    | AppInputAutocompleteType;
+};
+
+export type FieldType = {
+  name: string;
+  isSubmitting: boolean;
+  inputComponent:
+    | React.FC<
+        Pick<WizardField, "name" | "icon" | "htmlFor"> & {
+          isSubmitting: boolean;
+          type: string;
+          placeholder?: string;
+        }
+      >
+    | AppInputSelectType
+    | AppInputAutocompleteType;
   rest: Partial<WizardField>;
 };
 

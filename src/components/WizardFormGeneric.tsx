@@ -15,7 +15,6 @@ import AppInputSelect from "./AppInputSelect";
 interface Props<T> {
   validationSchema: T;
   fields: WizardField[];
-  buttonText: string;
   requestType: REQUEST_TYPE;
   initialValues: WizardFieldsType;
 }
@@ -23,7 +22,6 @@ interface Props<T> {
 const WizardFormGeneric = <T extends unknown>({
   validationSchema,
   fields,
-  buttonText,
   requestType,
   initialValues,
 }: Props<T>) => {
@@ -32,12 +30,18 @@ const WizardFormGeneric = <T extends unknown>({
   const steps = useAppSelector(selectSteps);
   const activeStepIdx = useAppSelector(selectActiveStepIdx);
   const dispatch = useAppDispatch();
+
   const handleSubmit = async (
     values: WizardFieldsType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
-    const { error } = await makeRequest(requestType, values, user.accessToken);
+    const { error } = await makeRequest({
+      requestType,
+      body: values,
+      accessToken: user.accessToken,
+    });
+
     if (!error) {
       dispatch(handleNext());
       router.push(`/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`);
@@ -50,15 +54,13 @@ const WizardFormGeneric = <T extends unknown>({
   const FieldItem = ({
     name,
     isSubmitting,
-    inputComponentType,
     rest,
+    inputComponent,
   }: FieldType) => {
     return (
       <div key={name}>
         <Field
-          component={
-            inputComponentType === "select" ? AppInputSelect : WizardFormInput
-          }
+          as={inputComponent}
           {...rest}
           name={name}
           isSubmitting={isSubmitting}
@@ -82,12 +84,12 @@ const WizardFormGeneric = <T extends unknown>({
           <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-3">
               {firstFourFields.map(
-                ({ name, inputComponentType, ...rest }: WizardField) => (
+                ({ name, inputComponent, ...rest }: WizardField) => (
                   <FieldItem
                     key={name}
                     name={name}
                     isSubmitting={isSubmitting}
-                    inputComponentType={inputComponentType}
+                    inputComponent={inputComponent}
                     rest={rest}
                   />
                 )
@@ -95,12 +97,12 @@ const WizardFormGeneric = <T extends unknown>({
             </div>
             <div>
               {restOfFields.map(
-                ({ name, inputComponentType, ...rest }: WizardField) => (
+                ({ name, inputComponent, ...rest }: WizardField) => (
                   <FieldItem
                     key={name}
                     name={name}
                     isSubmitting={isSubmitting}
-                    inputComponentType={inputComponentType}
+                    inputComponent={inputComponent}
                     rest={rest}
                   />
                 )

@@ -6,13 +6,12 @@ import { REQUEST_TYPE } from "../constants/wizard";
 
 const StepOne: FC = () => {
   const validationSchema = getDatabaseValidation();
-  const Fields = getDatabaseFields();
+  const fields = getDatabaseFields();
 
   return (
     <WizardFormGeneric
-      fields={Fields}
+      fields={fields}
       validationSchema={validationSchema}
-      buttonText={UI_BUTTON_TYPE[0]}
       requestType={REQUEST_TYPE.DATABASE}
       initialValues={{
         host: "",

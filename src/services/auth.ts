@@ -8,10 +8,7 @@ export const makeRequest = async (
   urlQuery?: Record<string, string>
 ): Promise<ResponseType> => {
   try {
-    let response = { data: {} } as AxiosResponse<{
-      error: { code: string; detail: { [key: string]: string[] } | string };
-      resource: any;
-    }>;
+    let response = { data: {} } as AxiosResponse<ResponseType>;
     if (
       requestType === REQUEST_TYPE.SIGN_IN ||
       requestType === REQUEST_TYPE.SIGN_UP

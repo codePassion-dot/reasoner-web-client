@@ -3,6 +3,7 @@ import { StepDetailsType } from "../types/wizard";
 export enum REQUEST_TYPE {
   DATABASE = "create-connection",
   SCHEMA = "save-problem-source",
+  SCHEMA_GET = "get-problem-source-schemas",
   COLUMN = "save-problem-target", // TODO: change to save-problem-target when backend is ready
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }
