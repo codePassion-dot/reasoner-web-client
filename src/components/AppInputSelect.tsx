@@ -26,7 +26,6 @@ const AppInputSelect = <T extends string | boolean | JSX.Element>({
   const [selectedOption, setSelectedOption] = useState<null | ListItem<T>>(
     null
   );
-
   const handleOptionChange = (option: ListItem<T>) => {
     setSelectedOption(option);
     onChange({ target: { name, value: option.value } });

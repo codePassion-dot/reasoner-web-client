@@ -26,7 +26,9 @@ export const getDatabaseValidation = () => {
     database: Yup.string().required("Required"),
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
-    ssl: Yup.bool().required("Required"),
+    ssl: Yup.bool()
+      .required("Required")
+      .typeError("The ssl option is required"),
   });
 };
 

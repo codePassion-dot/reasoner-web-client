@@ -11,7 +11,7 @@ export type DatabaseFieldsType = {
   database: string;
   username: string;
   password: string;
-  ssl: boolean;
+  ssl: boolean | null;
 };
 
 export type MakeRequestType = {

@@ -19,7 +19,7 @@ const StepOne: FC = () => {
         database: "",
         username: "",
         password: "",
-        ssl: false,
+        ssl: null,
       }}
     />
   );
