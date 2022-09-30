@@ -4,6 +4,7 @@ export enum REQUEST_TYPE {
   DATABASE = "create-connection",
   SCHEMA = "save-problem-source",
   SCHEMA_GET = "get-problem-source-schemas",
+  TABLES_GET = "get-problem-source-tables",
   COLUMN = "save-problem-target", // TODO: change to save-problem-target when backend is ready
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }
@@ -13,6 +14,19 @@ export enum AUTH_FIELDS {
   EMAIL = "email",
   ACCESS_TOKEN = "accessToken",
 }
+
+export const WIZARD_FIELDS = {
+  DATABASE: "database",
+  SCHEMA: "schema",
+  TABLE: "table",
+  COLUMN: "column",
+  ALGORITHM: "algorithm",
+  HOST: "host",
+  PORT: "port",
+  USERNAME: "username",
+  PASSWORD: "password",
+  SSL: "ssl",
+} as const;
 
 export const STEP_NAMES: { [key: string]: string } = {
   SOURCE: "Source Selection",

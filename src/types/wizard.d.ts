@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { REQUEST_TYPE, WIZARD_FIELDS } from "../constants/wizard";
 import {
   AppInputAutocompleteType,
   AppInputSelectType,
@@ -22,7 +23,14 @@ export type MakeRequestType = {
 
 export type SchemaFieldsType = {
   schema: string;
-  table: string;
+};
+
+export type DependentFieldType = {
+  [WIZARD_FIELDS]: string;
+};
+
+export type TableFieldsType = {
+  table: WIZARD_FIELDS;
 };
 
 export type AlgorithmFieldsType = {
@@ -30,7 +38,7 @@ export type AlgorithmFieldsType = {
 };
 
 export type ResponseType = {
-  resource: { schemaName: string }[] | null;
+  resource: { [key: string]: string }[] | null;
   error: ErrorResponseType;
 };
 
@@ -40,9 +48,17 @@ export type StepDetailsType = {
     description: string;
   };
 };
+
+export type DependentFields = {
+  field: WIZARD_FIELDS;
+  requestType: REQUEST_TYPE;
+}[];
+
 export type WizardField = {
   name: string;
   placeholder: string;
+  dependsOn?: string;
+  dependentFields?: DependentFields;
   icon: React.ReactNode;
   type: string | boolean;
   htmlFor: string;
@@ -59,9 +75,17 @@ export type WizardField = {
     | AppInputAutocompleteType;
 };
 
+export type SetFieldValueType = (
+  field: string,
+  value: any,
+  shouldValidate?: boolean
+) => void;
+
 export type FieldType = {
   name: string;
   isSubmitting: boolean;
+  dependsOn?: string;
+  dependentFields?: DependentFields;
   inputComponent:
     | React.FC<
         Pick<WizardField, "name" | "icon" | "htmlFor"> & {
@@ -78,4 +102,6 @@ export type FieldType = {
 export type WizardFieldsType =
   | DatabaseFieldsType
   | SchemaFieldsType
-  | AlgorithmFieldsType;
+  | TableFieldsType
+  | AlgorithmFieldsType
+  | DependentFieldType;

@@ -1,6 +1,7 @@
 import { Listbox } from "@headlessui/react";
 import { useState } from "react";
 import { BiCheck, BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { DependentFields } from "../types/wizard";
 import { classNames } from "../utils/common";
 
 interface ListItem<T> {
@@ -15,6 +16,7 @@ interface Props<T> {
   onChange: (event: { target: { name: string; value: T } }) => void;
   icon: JSX.Element;
   placeholder: string;
+  dependentFields?: DependentFields;
 }
 
 const AppInputSelect = <T extends string | boolean | JSX.Element>({

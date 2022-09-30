@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import AppInputAutocomplete from "../components/AppInputAutocomplete";
 import AppInputSelect from "../components/AppInputSelect";
 import WizardFormInput from "../components/WizardFormInput";
-import { REQUEST_TYPE } from "../constants/wizard";
+import { REQUEST_TYPE, WIZARD_FIELDS } from "../constants/wizard";
 import { makeRequest } from "../services/wizard";
 import { WizardField } from "../types/wizard";
 
@@ -35,47 +35,47 @@ export const getDatabaseValidation = () => {
 export const getDatabaseFields = (): WizardField[] => {
   return [
     {
-      name: "host",
+      name: WIZARD_FIELDS.HOST,
       placeholder: "Enter your host",
       icon: BiLinkAlt({ className: "text-2xl text-white" }),
       type: "text",
-      htmlFor: "host",
+      htmlFor: WIZARD_FIELDS.HOST,
       inputComponent: WizardFormInput,
     },
     {
-      name: "port",
+      name: WIZARD_FIELDS.PORT,
       placeholder: "Enter your database port",
       icon: BiBullseye({ className: "text-2xl text-white" }),
       type: "text",
-      htmlFor: "port",
+      htmlFor: WIZARD_FIELDS.PORT,
       inputComponent: WizardFormInput,
     },
     {
-      name: "database",
+      name: WIZARD_FIELDS.DATABASE,
       placeholder: "Enter your database name",
       icon: BiData({ className: "text-2xl text-white" }),
       type: "text",
-      htmlFor: "database",
+      htmlFor: WIZARD_FIELDS.DATABASE,
       inputComponent: WizardFormInput,
     },
     {
-      name: "username",
+      name: WIZARD_FIELDS.USERNAME,
       placeholder: "Enter your database username",
       icon: BiUser({ className: "text-2xl text-white" }),
       type: "text",
-      htmlFor: "username",
+      htmlFor: WIZARD_FIELDS.USERNAME,
       inputComponent: WizardFormInput,
     },
     {
-      name: "password",
+      name: WIZARD_FIELDS.PASSWORD,
       placeholder: "Enter your database password",
       icon: BiLock({ className: "text-2xl text-white" }),
       type: "password",
-      htmlFor: "password",
+      htmlFor: WIZARD_FIELDS.PASSWORD,
       inputComponent: WizardFormInput,
     },
     {
-      name: "ssl",
+      name: WIZARD_FIELDS.SSL,
       placeholder: "Select your ssl option",
       icon: BiShieldAlt2({ className: "text-2xl text-white" }),
       type: "select",
@@ -83,7 +83,7 @@ export const getDatabaseFields = (): WizardField[] => {
         { id: 1, humanText: "yes", value: true },
         { id: 2, humanText: "no", value: false },
       ],
-      htmlFor: "ssl",
+      htmlFor: WIZARD_FIELDS.SSL,
       inputComponent: AppInputSelect,
     },
   ];
@@ -113,20 +113,25 @@ export const getSchemaFields = async (
 ): Promise<WizardField[]> => {
   return [
     {
-      name: "schema",
+      name: WIZARD_FIELDS.SCHEMA,
       placeholder: "Select your schema",
       icon: BiShapeSquare({ className: "text-2xl text-white" }),
       type: "select",
-      htmlFor: "ssl",
+      options: await getSchemas(accessToken ?? ""),
+      dependentFields: [
+        { field: "table", requestType: REQUEST_TYPE.TABLES_GET },
+      ],
+      htmlFor: WIZARD_FIELDS.SCHEMA,
       inputComponent: AppInputAutocomplete,
     },
     {
-      name: "table",
+      name: WIZARD_FIELDS.TABLE,
       placeholder: "Select your table",
       icon: BiTable({ className: "text-2xl text-white" }),
       type: "select",
-      options: await getSchemas(accessToken ?? ""),
-      htmlFor: "ssl",
+      options: [],
+      dependsOn: "schema",
+      htmlFor: WIZARD_FIELDS.TABLE,
       inputComponent: AppInputAutocomplete,
     },
   ];

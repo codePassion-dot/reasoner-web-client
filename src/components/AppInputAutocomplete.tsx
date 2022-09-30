@@ -1,6 +1,11 @@
 import { Combobox, Listbox } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiCheck, BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { REQUEST_TYPE } from "../constants/wizard";
+import { useAppSelector } from "../hooks/redux";
+import { makeRequest } from "../services/wizard";
+import { selectUser } from "../store/selectors/users";
+import { DependentFields, WizardFieldsType } from "../types/wizard";
 import { classNames } from "../utils/common";
 
 interface ListItem<T> {
@@ -15,19 +20,37 @@ interface Props<T> {
   onChange: (event: { target: { name: string; value: T } }) => void;
   icon: JSX.Element;
   placeholder: string;
+  dependentFields?: DependentFields;
+  setItemOptions: (field: string, options: ListItem<T>[]) => void;
+  value: T;
 }
 
 const AppInputAutocomplete = <T extends string | boolean | JSX.Element>({
   options,
   onChange,
   name,
+  dependentFields,
+  setItemOptions,
+  value,
   ...rest
 }: Props<T>) => {
-  const [selectedOption, setSelectedOption] = useState<null | ListItem<T>>(
-    null
-  );
+  const [selectedOption, setSelectedOption] = useState<null | ListItem<T>>({
+    id: 0,
+    value: value as T,
+    humanText: value as string,
+  } as ListItem<T>);
 
   const [query, setQuery] = useState("");
+
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    setSelectedOption({
+      id: 0,
+      value: value as T,
+      humanText: value as string,
+    } as ListItem<T>);
+  }, [value]);
 
   const filteredOptions =
     query === ""
@@ -39,6 +62,22 @@ const AppInputAutocomplete = <T extends string | boolean | JSX.Element>({
   const handleOptionChange = (option: ListItem<T>) => {
     setSelectedOption(option);
     onChange({ target: { name, value: option.value } });
+    if (dependentFields && dependentFields.length) {
+      dependentFields.forEach(async ({ field, requestType }) => {
+        const { resource } = await makeRequest({
+          requestType: requestType,
+          body: { [name]: option.humanText },
+          accessToken: user.accessToken,
+        });
+        const newOptions: ListItem<T>[] =
+          resource?.map((item, index) => ({
+            id: index,
+            value: item[`${field}Name`] as T,
+            humanText: item[`${field}Name`],
+          })) ?? [];
+        setItemOptions(field, newOptions);
+      });
+    }
   };
 
   const determineChild = (option: ListItem<T>) => {

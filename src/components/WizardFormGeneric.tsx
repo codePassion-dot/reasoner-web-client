@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, useFormikContext } from "formik";
 import { REQUEST_TYPE } from "../constants/wizard";
 import { makeRequest } from "../services/wizard";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { handleNext } from "../store/slices/wizard";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
 import AppInputSelect from "./AppInputSelect";
+import { useEffect, useState } from "react";
 
 interface Props<T> {
   validationSchema: T;
@@ -31,6 +32,25 @@ const WizardFormGeneric = <T extends unknown>({
   const activeStepIdx = useAppSelector(selectActiveStepIdx);
   const dispatch = useAppDispatch();
 
+  const [items, setItems] = useState<WizardField[]>(fields);
+
+  useEffect(() => {
+    setItems(fields);
+  }, [fields]);
+
+  const setItemOptions = (
+    field: string,
+    options: { id: number; humanText: string; value: any }[]
+  ) => {
+    const newItems = items.map((item) => {
+      if (item.name === field) {
+        item.options = options;
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
+
   const handleSubmit = async (
     values: WizardFieldsType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
@@ -48,14 +68,17 @@ const WizardFormGeneric = <T extends unknown>({
     }
     setSubmitting(false);
   };
-  const firstFourFields = fields.slice(0, 5);
-  const restOfFields = fields.slice(5);
+
+  const firstFourFields = items.slice(0, 5);
+
+  const restOfFields = items.slice(5);
 
   const FieldItem = ({
     name,
     isSubmitting,
     rest,
     inputComponent,
+    dependentFields,
   }: FieldType) => {
     return (
       <div key={name}>
@@ -64,6 +87,8 @@ const WizardFormGeneric = <T extends unknown>({
           {...rest}
           name={name}
           isSubmitting={isSubmitting}
+          dependentFields={dependentFields}
+          setItemOptions={setItemOptions}
         />
         <ErrorMessage
           className="text-white text-xs text-left "
@@ -84,9 +109,15 @@ const WizardFormGeneric = <T extends unknown>({
           <div className="flex flex-row gap-3">
             <div className="flex flex-col gap-3">
               {firstFourFields.map(
-                ({ name, inputComponent, ...rest }: WizardField) => (
+                ({
+                  name,
+                  inputComponent,
+                  dependentFields,
+                  ...rest
+                }: WizardField) => (
                   <FieldItem
                     key={name}
+                    dependentFields={dependentFields}
                     name={name}
                     isSubmitting={isSubmitting}
                     inputComponent={inputComponent}
@@ -97,9 +128,15 @@ const WizardFormGeneric = <T extends unknown>({
             </div>
             <div>
               {restOfFields.map(
-                ({ name, inputComponent, ...rest }: WizardField) => (
+                ({
+                  name,
+                  inputComponent,
+                  dependentFields,
+                  ...rest
+                }: WizardField) => (
                   <FieldItem
                     key={name}
+                    dependentFields={dependentFields}
                     name={name}
                     isSubmitting={isSubmitting}
                     inputComponent={inputComponent}
