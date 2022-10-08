@@ -77,6 +77,18 @@ export const makeRequest = async ({
         },
       });
     }
+
+    if (requestType === REQUEST_TYPE.COLUMNS_POST) {
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
+      );
+      response = await authenticatedInstance.post(url.toString(), body, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
     return response.data;
   } catch (error) {
     return {

@@ -30,7 +30,7 @@ const Step: NextPage = () => {
     stepTwo: <StepTwo />,
     stepThree: <StepThree />,
     stepFour: <StepOne />,
-  };
+  }; //disgusting
 
   useEffect(() => {
     dispatch(setInitialActiveStep({ stepKey }));
