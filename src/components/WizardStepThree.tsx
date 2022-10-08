@@ -1,25 +1,19 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useEffect, useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
+import { REQUEST_TYPE } from "../constants/wizard";
+import { useAppSelector } from "../hooks/redux";
+import { makeRequest } from "../services/wizard";
+import { selectUser } from "../store/selectors/users";
+import { ColumnsMappingType } from "../types/wizard";
 import WizardStepThreeSection from "./WizardStepThreeSection";
 
 const StepThree = () => {
-  const sections = [
+  const user = useAppSelector(selectUser);
+  const [sections, setSections] = useState<ColumnsMappingType[]>([
     {
       sectionTitle: "Columns found",
-      options: [
-        "Column 1",
-        "Column 2",
-        "Column 3",
-        "Column 4",
-        "Column 5",
-        "Column 6",
-        "Column 7",
-        "Column 8",
-        "Column 9",
-        "Column 10",
-        "Column 11",
-        "Column 12",
-      ],
+      options: [],
       droppableId: "droppable-1",
     },
     {
@@ -32,7 +26,21 @@ const StepThree = () => {
       options: [],
       droppableId: "droppable-3",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const searchColumns = async () => {
+      const { resource } = await makeRequest({
+        requestType: REQUEST_TYPE.COLUMNS_GET,
+        accessToken: user?.accessToken,
+      });
+      const newSections = [...sections];
+      newSections[0].options =
+        resource?.map(({ columnName }) => columnName) ?? [];
+      setSections(newSections);
+    };
+    searchColumns();
+  }, []);
 
   const onDragEnd = (item: DropResult) => {
     const { source, destination } = item;
@@ -49,21 +57,23 @@ const StepThree = () => {
       (section) => section.droppableId === destination.droppableId
     );
     if (sourceSection && destinationSection) {
+      const newSections = [...sections];
       const [removed] = sourceSection.options.splice(source.index, 1);
       destinationSection.options.splice(destination.index, 0, removed);
+      setSections(newSections);
     }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row h-96">
-        <WizardStepThreeSection {...sections[0]} />
+        <WizardStepThreeSection sections={sections} idx={0} />
         <BiArrowToRight className="self-center animate-pulse w-16 h-14" />
         <div className="flex flex-col gap-2">
           <div className="basis-11/12">
-            <WizardStepThreeSection {...sections[1]} />
+            <WizardStepThreeSection sections={sections} idx={1} />
           </div>
           <div>
-            <WizardStepThreeSection {...sections[2]} />
+            <WizardStepThreeSection sections={sections} idx={2} />
           </div>
         </div>
       </div>

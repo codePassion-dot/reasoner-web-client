@@ -1,31 +1,30 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { FC } from "react";
 import slugify from "slugify";
+import { ColumnsMappingType } from "../types/wizard";
 
 interface Props {
-  options: string[];
-  sectionTitle: string;
-  droppableId: string;
+  sections:ColumnsMappingType[];
+  idx: number;
 }
 
 const WizardStepThreeSection: FC<Props> = ({
-  options,
-  sectionTitle,
-  droppableId,
+  sections,
+  idx,
 }) => {
   return (
     <div className="flex rounded-lg flex-col  h-full w-80">
       <div className="justify-between shadow-lg rounded-xl bg-cloud-burst flex flex-row shadow-cloud-burst/50 p-2 mb-2">
-        <h2 className="text-xl">{sectionTitle}</h2>
+        <h2 className="text-xl">{sections[idx].sectionTitle}</h2>
       </div>
-      <Droppable droppableId={droppableId}>
+      <Droppable droppableId={sections[idx].droppableId}>
         {(provided) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
             className="flex gap-3 flex-col bg-cloud-burst overflow-y-auto scrollbar-hide h-full p-3 rounded-xl"
           >
-            {options.map((option, idx) => (
+            {sections[idx].options.map((option, idx) => (
               <Draggable
                 draggableId={slugify(option, { lower: true })}
                 key={slugify(option, { lower: true })}

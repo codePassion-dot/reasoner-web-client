@@ -5,6 +5,7 @@ export enum REQUEST_TYPE {
   SCHEMA = "save-problem-source",
   SCHEMA_GET = "get-problem-source-schemas",
   TABLES_GET = "get-problem-source-tables",
+  COLUMNS_GET = "problem-source-columns",
   COLUMN = "save-problem-target", // TODO: change to save-problem-target when backend is ready
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }

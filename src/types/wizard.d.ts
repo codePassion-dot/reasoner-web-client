@@ -54,6 +54,12 @@ export type DependentFields = {
   requestType: REQUEST_TYPE;
 }[];
 
+export type ColumnsMappingType = {
+  sectionTitle: string;
+  options: string[];
+  droppableId: string;
+};
+
 export type WizardField = {
   name: string;
   placeholder: string;
