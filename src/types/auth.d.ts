@@ -1,13 +1,12 @@
+import { ErrorResponseType } from "./common";
+
 export type UserKeysType = {
   accessToken: string;
 };
 
-export type ResponseType = {
-  resource: { accessToken: string } | { id: string; email: string } | null;
-  error: {
-    code: string;
-    detail: { [key: string]: string[] } | string;
-  } | null;
+export type SignInFieldsType = {
+  email: string;
+  password: string;
 };
 
 export type ResponseResourceType =
@@ -15,17 +14,16 @@ export type ResponseResourceType =
   | { id: string; email: string }
   | null;
 
-export type SignInFieldsType = {
-  email: string;
-  password: string;
-};
-
 export type SignUpFieldsType = {
   email: string;
   password: string;
   confirmPassword: string;
 };
 
+export type ResponseType = {
+  resource: { accessToken: string } | { id: string; email: string } | null;
+  error: ErrorResponseType;
+};
 export type RecoverFieldsType = {
   email: string;
 };
