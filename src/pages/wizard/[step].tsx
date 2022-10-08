@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import WizardBoxDetail from "../../components/WizardBoxDetail";
 import StepOne from "../../components/WizardStepOne";
+import StepTwo from "../../components/WizardStepTwo";
 import WizardLayout from "../../layouts/WizardLayout";
 import WithAuthentication from "../../components/WithAuthentication";
 import { useRouter } from "next/router";
@@ -25,7 +26,7 @@ const Step: NextPage = () => {
 
   const components: { [key: string]: JSX.Element } = {
     stepOne: <StepOne />,
-    stepTwo: <StepOne />,
+    stepTwo: <StepTwo />,
     stepThree: <StepOne />,
     stepFour: <StepOne />,
   };
