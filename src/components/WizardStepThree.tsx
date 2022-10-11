@@ -59,9 +59,14 @@ const StepThree = () => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
+    const body = {
+      sections: values.sections.filter(
+        (section) => section.droppableId !== "columns-found"
+      ),
+    };
     const { error } = await makeRequest({
       requestType: REQUEST_TYPE.COLUMNS_POST,
-      body: values,
+      body,
       accessToken: user.accessToken,
     });
 

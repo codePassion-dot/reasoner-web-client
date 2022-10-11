@@ -153,17 +153,17 @@ export const getColumnsFields = async (
     {
       sectionTitle: "Columns found",
       options: await getColumns(accessToken ?? ""),
-      droppableId: "droppable-1",
+      droppableId: "columns-found",
     },
     {
       sectionTitle: "Predicting Factors",
       options: [],
-      droppableId: "droppable-2",
+      droppableId: "predicting-factors",
     },
     {
       sectionTitle: "Goal Factor",
       options: [],
-      droppableId: "droppable-3",
+      droppableId: "goal-factor",
     },
   ];
 };
