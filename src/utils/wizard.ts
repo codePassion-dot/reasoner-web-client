@@ -146,6 +146,33 @@ const getColumns = async (accessToken: string): Promise<string[]> => {
   return resource?.map(({ columnName }) => columnName) ?? [];
 };
 
+export const getSelectedColumns = (
+  accessToken: string
+): ColumnsMappingType[] => {
+  return [
+    {
+      sectionTitle: "Selected columns",
+      options: [],
+      droppableId: "selected-columns",
+    },
+    {
+      sectionTitle: "Ordinal columns",
+      options: [],
+      droppableId: "ordinal-columns",
+    },
+    {
+      sectionTitle: "Numeric columns",
+      options: [],
+      droppableId: "numeric-columns",
+    },
+    {
+      sectionTitle: "Boolean columns",
+      options: [],
+      droppableId: "boolean-columns",
+    },
+  ];
+};
+
 export const getColumnsFields = async (
   accessToken: string
 ): Promise<ColumnsMappingType[]> => {

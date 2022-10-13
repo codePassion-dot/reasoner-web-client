@@ -8,7 +8,7 @@ interface Props {
   idx: number;
 }
 
-const WizardStepThreeSection: FC<Props> = ({ sections, idx }) => {
+const WizardStepDragAndDropSection: FC<Props> = ({ sections, idx }) => {
   return (
     <div className="flex rounded-lg flex-col  h-full w-80">
       <div className="justify-between shadow-lg rounded-xl bg-cloud-burst flex flex-row shadow-cloud-burst/50 p-2 mb-2">
@@ -48,4 +48,4 @@ const WizardStepThreeSection: FC<Props> = ({ sections, idx }) => {
   );
 };
 
-export default WizardStepThreeSection;
+export default WizardStepDragAndDropSection;
