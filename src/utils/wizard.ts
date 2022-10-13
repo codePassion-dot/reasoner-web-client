@@ -14,7 +14,7 @@ import AppInputSelect from "../components/AppInputSelect";
 import WizardFormInput from "../components/WizardFormInput";
 import { REQUEST_TYPE, WIZARD_FIELDS } from "../constants/wizard";
 import { makeRequest } from "../services/wizard";
-import { WizardField } from "../types/wizard";
+import { ColumnsMappingType, WizardField } from "../types/wizard";
 
 export const getDatabaseValidation = () => {
   return Yup.object().shape({
@@ -133,6 +133,37 @@ export const getSchemaFields = async (
       dependsOn: "schema",
       htmlFor: WIZARD_FIELDS.TABLE,
       inputComponent: AppInputAutocomplete,
+    },
+  ];
+};
+
+const getColumns = async (accessToken: string): Promise<string[]> => {
+  const { resource } = await makeRequest({
+    requestType: REQUEST_TYPE.COLUMNS_GET,
+    accessToken: accessToken,
+  });
+
+  return resource?.map(({ columnName }) => columnName) ?? [];
+};
+
+export const getColumnsFields = async (
+  accessToken: string
+): Promise<ColumnsMappingType[]> => {
+  return [
+    {
+      sectionTitle: "Columns found",
+      options: await getColumns(accessToken ?? ""),
+      droppableId: "columns-found",
+    },
+    {
+      sectionTitle: "Predicting Factors",
+      options: [],
+      droppableId: "predicting-factors",
+    },
+    {
+      sectionTitle: "Goal Factor",
+      options: [],
+      droppableId: "goal-factor",
     },
   ];
 };
