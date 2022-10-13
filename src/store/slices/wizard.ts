@@ -35,9 +35,9 @@ const initialState: {
       key: "COLUMNS",
       label: STEP_NAMES.COLUMNS,
       isDone: false,
-      component: "stepOne",
+      component: "stepThree",
       idx: 2,
-      requestType: REQUEST_TYPE.COLUMN,
+      requestType: REQUEST_TYPE.COLUMNS_GET,
     },
     {
       key: "ALGORITHM",

@@ -80,15 +80,25 @@ const WizardFormGeneric = <T extends unknown>({
     inputComponent,
     dependentFields,
   }: FieldType) => {
+    let inputProps = {
+      name,
+      isSubmitting,
+      ...rest,
+    };
+    if (dependentFields) {
+      inputProps = {
+        ...inputProps,
+        dependentFields,
+      };
+    }
     return (
       <div key={name}>
         <Field
           as={inputComponent}
-          {...rest}
-          name={name}
-          isSubmitting={isSubmitting}
-          dependentFields={dependentFields}
-          setItemOptions={setItemOptions}
+          {...inputProps}
+          {...(dependentFields && {
+            setItemOptions,
+          })}
         />
         <ErrorMessage
           className="text-white text-xs text-left "

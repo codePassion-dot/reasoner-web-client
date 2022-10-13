@@ -14,6 +14,7 @@ import {
   setActiveStepIdx,
   setInitialActiveStep,
 } from "../../store/slices/wizard";
+import StepThree from "../../components/WizardStepThree";
 
 const Step: NextPage = () => {
   const router = useRouter();
@@ -27,9 +28,9 @@ const Step: NextPage = () => {
   const components: { [key: string]: JSX.Element } = {
     stepOne: <StepOne />,
     stepTwo: <StepTwo />,
-    stepThree: <StepOne />,
+    stepThree: <StepThree />,
     stepFour: <StepOne />,
-  };
+  }; //disgusting
 
   useEffect(() => {
     dispatch(setInitialActiveStep({ stepKey }));
