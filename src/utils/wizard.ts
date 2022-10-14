@@ -14,7 +14,11 @@ import AppInputSelect from "../components/AppInputSelect";
 import WizardFormInput from "../components/WizardFormInput";
 import { REQUEST_TYPE, WIZARD_FIELDS } from "../constants/wizard";
 import { makeRequest } from "../services/wizard";
-import { ColumnsMappingType, WizardField } from "../types/wizard";
+import {
+  ColumnsMappingType,
+  SelectedOrdinalColumnsType,
+  WizardField,
+} from "../types/wizard";
 
 export const getDatabaseValidation = () => {
   return Yup.object().shape({
@@ -201,4 +205,28 @@ export const getColumnsFields = async (
       droppableId: "goal-factor",
     },
   ];
+};
+
+export const getSelectedOrdinalColumns = async (accessToken: string) => {
+  const { resource } = await makeRequest({
+    requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_GET,
+    accessToken: accessToken,
+  });
+  return resource;
+};
+
+export const getOrdinalColumnsFields = async (
+  accessToken: string
+): Promise<SelectedOrdinalColumnsType[]> => {
+  const ordinalColumns = await getSelectedOrdinalColumns(accessToken);
+
+  return (
+    ordinalColumns?.map((ordinalColumn) => ({
+      columnName: ordinalColumn.columnName,
+      mappedValues: ordinalColumn.values.map((value, idx) => ({
+        ordinalValue: value,
+        mappedValue: null,
+      })),
+    })) ?? []
+  );
 };

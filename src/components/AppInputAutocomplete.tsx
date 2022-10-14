@@ -72,7 +72,7 @@ const AppInputAutocomplete = <T extends string | boolean | JSX.Element>({
         const newOptions: ListItem<T>[] =
           resource?.map((item, index) => ({
             id: index,
-            value: item[`${field}Name`] as T,
+            value: item[`${field}Name`] as T & T[],
             humanText: item[`${field}Name`],
           })) ?? [];
         setItemOptions(field, newOptions);
