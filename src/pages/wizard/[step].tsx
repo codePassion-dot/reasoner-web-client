@@ -15,6 +15,7 @@ import {
   setInitialActiveStep,
 } from "../../store/slices/wizard";
 import StepThree from "../../components/WizardStepThree";
+import StepFour from "../../components/WizardStepFour";
 
 const Step: NextPage = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Step: NextPage = () => {
     stepOne: <StepOne />,
     stepTwo: <StepTwo />,
     stepThree: <StepThree />,
-    stepFour: <StepOne />,
+    stepFour: <StepFour />,
   }; //disgusting
 
   useEffect(() => {

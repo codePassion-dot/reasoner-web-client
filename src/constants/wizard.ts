@@ -7,6 +7,8 @@ export enum REQUEST_TYPE {
   TABLES_GET = "get-problem-source-tables",
   COLUMNS_GET = "problem-source-columns",
   COLUMNS_POST = "save-problem-source-columns",
+  COLUMNS_TYPE_GET = "get-problem-source-selected-columns",
+  COLUMNS_TYPE_POST = "save-problem-source-columns-types",
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }
 
@@ -33,6 +35,7 @@ export const STEP_NAMES: { [key: string]: string } = {
   SOURCE: "Source Selection",
   SCHEMA_AND_TABLE: "Schema Mapping",
   COLUMNS: "Column Mapping",
+  COLUMNS_TYPE: "Column Type",
   ALGORITHM: "Algorithm Selection",
 } as const;
 
@@ -48,6 +51,10 @@ export const STEP_DETAILS: StepDetailsType = {
   COLUMNS: {
     title: "tell us your model",
     description: "Map your data to the columns",
+  },
+  COLUMNS_TYPE: {
+    title: "tell us the type of your columns",
+    description: "select the type of your columns (numeric, boolean, ordinal)",
   },
   ALGORITHM: {
     title: "algorithm to find the neighbor",
