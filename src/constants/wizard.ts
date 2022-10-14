@@ -7,6 +7,7 @@ export enum REQUEST_TYPE {
   TABLES_GET = "get-problem-source-tables",
   COLUMNS_GET = "problem-source-columns",
   COLUMNS_POST = "save-problem-source-columns",
+  COLUMNS_TYPE_GET = "get-problem-source-selected-columns",
   COLUMNS_TYPE_POST = "save-problem-source-columns-types",
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }

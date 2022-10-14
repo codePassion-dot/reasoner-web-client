@@ -67,7 +67,9 @@ const WizardStepDragAndDrop: FC<Props> = ({ sections, requestType }) => {
     setSubmitting(true);
     const body = {
       sections: values.sections.filter(
-        (section) => section.droppableId !== "columns-found"
+        (section) =>
+          section.droppableId !== "columns-found" &&
+          section.droppableId !== "selected-columns"
       ),
     };
     const { error } = await makeRequest({

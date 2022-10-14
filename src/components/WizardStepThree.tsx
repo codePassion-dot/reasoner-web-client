@@ -20,7 +20,7 @@ const StepThree = () => {
   return (
     <WizardStepDragAndDrop
       sections={sections}
-      requestType={REQUEST_TYPE.COLUMNS_GET}
+      requestType={REQUEST_TYPE.COLUMNS_POST}
     />
   );
 };
