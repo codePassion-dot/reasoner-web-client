@@ -29,3 +29,9 @@ export type ErrorResponseType = {
   code: string;
   detail: { [key: string]: string[] } | string;
 };
+
+export interface ListItem<T> {
+  id: number;
+  value: T;
+  humanText?: string;
+}

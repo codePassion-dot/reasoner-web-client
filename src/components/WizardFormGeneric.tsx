@@ -10,7 +10,6 @@ import { selectUser } from "../store/selectors/users";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { handleNext } from "../store/slices/wizard";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
-import AppInputSelect from "./AppInputSelect";
 import { useEffect, useState } from "react";
 
 interface Props<T> {

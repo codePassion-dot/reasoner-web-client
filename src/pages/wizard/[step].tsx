@@ -16,6 +16,7 @@ import {
 } from "../../store/slices/wizard";
 import StepThree from "../../components/WizardStepThree";
 import StepFour from "../../components/WizardStepFour";
+import StepFive from "../../components/WizardStepFive";
 
 const Step: NextPage = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Step: NextPage = () => {
     stepTwo: <StepTwo />,
     stepThree: <StepThree />,
     stepFour: <StepFour />,
+    stepFive: <StepFive />,
   }; //disgusting
 
   useEffect(() => {

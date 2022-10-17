@@ -38,7 +38,7 @@ export type AlgorithmFieldsType = {
 };
 
 export type ResponseType = {
-  resource: { [key: string]: string }[] | null;
+  resource: { [key: string]: string & string[] }[] | null;
   error: ErrorResponseType;
 };
 
@@ -58,6 +58,11 @@ export type ColumnsMappingType = {
   sectionTitle: string;
   options: string[];
   droppableId: string;
+};
+
+export type SelectedOrdinalColumnsType = {
+  columnName: string;
+  mappedValues: { ordinalValue: string; mappedValue: number | null }[];
 };
 
 export type WizardField = {
