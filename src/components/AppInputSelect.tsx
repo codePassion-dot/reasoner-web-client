@@ -1,14 +1,9 @@
 import { Listbox } from "@headlessui/react";
 import { useState } from "react";
 import { BiCheck, BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { ListItem } from "../types/common";
 import { DependentFields } from "../types/wizard";
 import { classNames } from "../utils/common";
-
-interface ListItem<T> {
-  id: number;
-  value: T;
-  humanText?: string;
-}
 
 interface Props<T> {
   options: ListItem<T>[] | undefined;

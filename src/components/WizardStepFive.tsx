@@ -1,9 +1,14 @@
-import { FieldArray, Form, Formik } from "formik";
+import { FieldArray, Form, Formik, FormikValues } from "formik";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BiColumns, BiShieldAlt2 } from "react-icons/bi";
-import { useAppSelector } from "../hooks/redux";
+import { REQUEST_TYPE } from "../constants/wizard";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
-import { SelectedOrdinalColumnsType } from "../types/wizard";
+import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
+import { handleNext } from "../store/slices/wizard";
+import { SelectedOrdinalColumnsType, WizardFieldsType } from "../types/wizard";
 import { getOrdinalColumnsFields } from "../utils/wizard";
 import AppInputSelect from "./AppInputSelect";
 
@@ -20,7 +25,11 @@ interface Fields {
 
 const StepFive = () => {
   const user = useAppSelector(selectUser);
+  const router = useRouter();
+  const steps = useAppSelector(selectSteps);
+  const dispatch = useAppDispatch();
   const [fields, setFields] = useState<Fields>({});
+  const activeStepIdx = useAppSelector(selectActiveStepIdx);
 
   const [selectedFieldMappedOptions, setSelectedFieldMappedOptions] = useState<
     SelectItem[]
@@ -36,8 +45,22 @@ const StepFive = () => {
     fetchFields();
   }, [user.accessToken]);
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const handleSubmit = async (
+    values: WizardFieldsType,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    setSubmitting(true);
+    const { error, resource } = await makeRequest({
+      requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+      body: { selectedOrdinalColumns: values },
+      accessToken: user.accessToken,
+    });
+
+    if (!error) {
+      dispatch(handleNext());
+      router.push(`/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`);
+    }
+    setSubmitting(false);
   };
 
   const handleOnChangeSelectedColumn = ({ target: { name, value } }: any) => {
@@ -115,7 +138,7 @@ const StepFive = () => {
                       <>
                         {values[selectedOption?.humanText ?? "default"]?.map(
                           ({ ordinalValue, mappedValue }, idx) => (
-                            <div key={idx} className="flex flex-row gap-3">
+                            <div key={idx} className="flex flex-row gap-2">
                               <h2 className="basis-1/2 text-start">
                                 {ordinalValue}
                               </h2>
