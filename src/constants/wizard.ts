@@ -9,6 +9,8 @@ export enum REQUEST_TYPE {
   COLUMNS_POST = "save-problem-source-columns",
   COLUMNS_TYPE_GET = "get-problem-source-selected-columns",
   COLUMNS_TYPE_POST = "save-problem-source-columns-types",
+  COLUMNS_SELECTED_ORDINAL_GET = "get-problem-source-selected-ordinal-columns",
+  COLUMNS_SELECTED_ORDINAL_POST = "save-problem-source-selected-ordinal-columns",
   ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
 }
 
@@ -36,6 +38,7 @@ export const STEP_NAMES: { [key: string]: string } = {
   SCHEMA_AND_TABLE: "Schema Mapping",
   COLUMNS: "Column Mapping",
   COLUMNS_TYPE: "Column Type",
+  SELECTED_ORDINAL_COLUMNS: "Ordinal Columns",
   ALGORITHM: "Algorithm Selection",
 } as const;
 
@@ -55,6 +58,10 @@ export const STEP_DETAILS: StepDetailsType = {
   COLUMNS_TYPE: {
     title: "tell us the type of your columns",
     description: "select the type of your columns (numeric, boolean, ordinal)",
+  },
+  SELECTED_ORDINAL_COLUMNS: {
+    title: "tell us the ordinal columns",
+    description: "select the ordinal columns",
   },
   ALGORITHM: {
     title: "algorithm to find the neighbor",

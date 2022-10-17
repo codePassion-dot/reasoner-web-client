@@ -47,6 +47,14 @@ const initialState: {
       idx: 3,
       requestType: REQUEST_TYPE.COLUMNS_TYPE_POST,
     },
+    {
+      key: "SELECTED_ORDINAL_COLUMNS",
+      label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+      isDone: false,
+      component: "stepFive",
+      idx: 4,
+      requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+    },
   ],
   activeStepIdx: 0,
 };

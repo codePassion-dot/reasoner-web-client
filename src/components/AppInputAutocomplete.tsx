@@ -5,14 +5,9 @@ import { REQUEST_TYPE } from "../constants/wizard";
 import { useAppSelector } from "../hooks/redux";
 import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
+import { ListItem } from "../types/common";
 import { DependentFields, WizardFieldsType } from "../types/wizard";
 import { classNames } from "../utils/common";
-
-interface ListItem<T> {
-  id: number;
-  value: T;
-  humanText: string;
-}
 
 interface Props<T> {
   options: ListItem<T>[] | undefined;
@@ -72,7 +67,7 @@ const AppInputAutocomplete = <T extends string | boolean | JSX.Element>({
         const newOptions: ListItem<T>[] =
           resource?.map((item, index) => ({
             id: index,
-            value: item[`${field}Name`] as T,
+            value: item[`${field}Name`] as T & T[],
             humanText: item[`${field}Name`],
           })) ?? [];
         setItemOptions(field, newOptions);
