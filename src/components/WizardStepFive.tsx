@@ -8,51 +8,59 @@ import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
 import { handleNext } from "../store/slices/wizard";
-import { SelectedOrdinalColumnsType, WizardFieldsType } from "../types/wizard";
+import { OrdinalMappedFields } from "../types/wizard";
 import { getOrdinalColumnsFields } from "../utils/wizard";
 import AppInputSelect from "./AppInputSelect";
-
-interface SelectItem {
-  id: number;
-  value: string;
-  humanText: string;
-  mappedValues?: { ordinalValue: string; mappedValue: number | null }[];
-}
-
-interface Fields {
-  [key: string]: { ordinalValue: string; mappedValue: number | null }[];
-}
 
 const StepFive = () => {
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const steps = useAppSelector(selectSteps);
   const dispatch = useAppDispatch();
-  const [fields, setFields] = useState<Fields>({});
+  const [fields, setFields] = useState<OrdinalMappedFields>({});
   const activeStepIdx = useAppSelector(selectActiveStepIdx);
-
-  const [selectedFieldMappedOptions, setSelectedFieldMappedOptions] = useState<
-    SelectItem[]
-  >([]);
 
   useEffect(() => {
     const fetchFields = async () => {
       const ordinalColumns = await getOrdinalColumnsFields(user.accessToken);
-      for (const column of ordinalColumns) {
-        setFields({ ...fields, [column.columnName]: column.mappedValues });
-      }
+      const fields = ordinalColumns.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr.columnName]: {
+            selectedOptions: curr.mappedValues,
+            fieldMappedOptions: Array.from(
+              { length: curr.mappedValues.length ?? 0 },
+              (_, idx) => ({
+                id: idx + 1,
+                value: `${idx + 1}`,
+                humanText: `${idx + 1}`,
+              })
+            ),
+          },
+        }),
+        {}
+      );
+      setFields(fields);
     };
     fetchFields();
   }, [user.accessToken]);
 
   const handleSubmit = async (
-    values: WizardFieldsType,
+    values: OrdinalMappedFields,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
+
     const { error, resource } = await makeRequest({
       requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
-      body: { selectedOrdinalColumns: values },
+      body: {
+        selectedOrdinalColumns: Object.keys(values).reduce((acc, curr) => {
+          return {
+            ...acc,
+            [curr]: values[curr].selectedOptions,
+          };
+        }, {}),
+      },
       accessToken: user.accessToken,
     });
 
@@ -63,33 +71,20 @@ const StepFive = () => {
     setSubmitting(false);
   };
 
-  const handleOnChangeSelectedColumn = ({ target: { name, value } }: any) => {
-    const selectedColumn = fields[value].length;
-    if (selectedColumn) {
-      setSelectedFieldMappedOptions(
-        Array.from({ length: selectedColumn ?? 0 }, (_, idx) => ({
-          id: idx + 1,
-          value: `${idx + 1}`,
-          humanText: `${idx + 1}`,
-        }))
-      );
-    }
-  };
-
   const handleOnChangeMappedValue = (
-    { target: { name, value } }: any,
+    { target: { name, value } }: { target: { name: string; value: string } },
     setFieldValue: (
       field: string,
       value: any,
       shouldValidate?: boolean
     ) => void,
-    values: Fields
+    values: OrdinalMappedFields
   ) => {
     const [ordinalValue, columnName] = name.split("-");
-    const optionChanged = values[columnName].find(
+    const optionChanged = values[columnName].selectedOptions.find(
       (option) => option.ordinalValue === ordinalValue
     );
-    let newMappedOptions = selectedFieldMappedOptions.filter(
+    let newMappedOptions = values[columnName].fieldMappedOptions.filter(
       ({ humanText }) => humanText !== value
     );
     if (optionChanged?.mappedValue) {
@@ -102,8 +97,8 @@ const StepFive = () => {
         },
       ].sort((a, b) => a.id - b.id);
     }
-    setSelectedFieldMappedOptions(newMappedOptions);
-    const newMappedValues = values[columnName].map((option) => {
+
+    const newMappedValues = values[columnName].selectedOptions.map((option) => {
       if (option.ordinalValue === ordinalValue) {
         return {
           ...option,
@@ -112,7 +107,11 @@ const StepFive = () => {
       }
       return option;
     });
-    setFieldValue(columnName, newMappedValues);
+
+    setFieldValue(columnName, {
+      selectedOptions: newMappedValues,
+      fieldMappedOptions: newMappedOptions,
+    });
   };
 
   return (
@@ -128,7 +127,7 @@ const StepFive = () => {
                   humanText: key,
                 }))}
                 name="columnNames"
-                onChange={handleOnChangeSelectedColumn}
+                onChange={() => {}}
                 icon={<BiColumns className="text-white" />}
                 placeholder="select ordinal column"
               >
@@ -136,14 +135,29 @@ const StepFive = () => {
                   <FieldArray name={selectedOption?.humanText ?? "default"}>
                     {() => (
                       <>
-                        {values[selectedOption?.humanText ?? "default"]?.map(
+                        {values[
+                          selectedOption?.humanText ?? "default"
+                        ]?.selectedOptions.map(
                           ({ ordinalValue, mappedValue }, idx) => (
-                            <div key={idx} className="flex flex-row gap-2">
-                              <h2 className="basis-1/2 text-start">
+                            <div
+                              key={idx}
+                              className="flex items-center  flex-row gap-2"
+                            >
+                              <h2 className="basis-1/2 text-lg text-center bg-whisper text-denim rounded-2xl py-1">
                                 {ordinalValue}
                               </h2>
                               <AppInputSelect
-                                options={selectedFieldMappedOptions}
+                                options={
+                                  values[selectedOption?.humanText ?? "default"]
+                                    ?.fieldMappedOptions
+                                }
+                                commitedOption={{
+                                  id: mappedValue ?? idx,
+                                  humanText: mappedValue
+                                    ? `${mappedValue}`
+                                    : "",
+                                  value: mappedValue ? `${mappedValue}` : "",
+                                }}
                                 name={`${ordinalValue}-${selectedOption?.humanText}`}
                                 onChange={(event) =>
                                   handleOnChangeMappedValue(

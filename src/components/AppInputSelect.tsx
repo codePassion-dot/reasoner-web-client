@@ -1,5 +1,5 @@
 import { Listbox } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiCheck, BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { ListItem } from "../types/common";
 import { DependentFields } from "../types/wizard";
@@ -13,6 +13,7 @@ interface Props<T> {
   placeholder: string;
   dependentFields?: DependentFields;
   children?: (item: ListItem<T> | null) => JSX.Element;
+  commitedOption?: ListItem<T> | null;
 }
 
 const AppInputSelect = <T extends string | boolean | JSX.Element>({
@@ -20,8 +21,15 @@ const AppInputSelect = <T extends string | boolean | JSX.Element>({
   onChange,
   name,
   children,
+  commitedOption,
   ...rest
 }: Props<T>) => {
+  useEffect(() => {
+    if (!commitedOption?.humanText) {
+      setSelectedOption(null);
+    }
+  }, [commitedOption]);
+
   const [selectedOption, setSelectedOption] = useState<null | ListItem<T>>(
     null
   );

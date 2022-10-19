@@ -65,6 +65,13 @@ export type SelectedOrdinalColumnsType = {
   mappedValues: { ordinalValue: string; mappedValue: number | null }[];
 };
 
+export type OrdinalMappedFields = {
+  [key: string]: {
+    selectedOptions: { ordinalValue: string; mappedValue: number | null }[];
+    fieldMappedOptions: { id: number; value: string; humanText: string }[];
+  };
+};
+
 export type WizardField = {
   name: string;
   placeholder: string;
