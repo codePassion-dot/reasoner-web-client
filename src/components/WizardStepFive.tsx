@@ -126,6 +126,7 @@ const StepFive = () => {
                   value: key,
                   humanText: key,
                 }))}
+                parentCustomStyles="w-full h-9 relative"
                 name="columnNames"
                 onChange={() => {}}
                 icon={<BiColumns className="text-white" />}

@@ -117,6 +117,12 @@ export type FieldType = {
   rest: Partial<WizardField>;
 };
 
+export type NewProblemSelectedColumns = {
+  columnName: string;
+  type: string;
+  options: string[];
+};
+
 export type WizardFieldsType =
   | DatabaseFieldsType
   | SchemaFieldsType

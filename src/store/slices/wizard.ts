@@ -55,6 +55,14 @@ const initialState: {
       idx: 4,
       requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
     },
+    {
+      key: "NEW_PROBLEM_SELECT_COLUMNS",
+      label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+      isDone: false,
+      component: "stepSix",
+      idx: 5,
+      requestType: REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_POST,
+    },
   ],
   activeStepIdx: 0,
 };

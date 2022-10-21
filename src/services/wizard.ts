@@ -137,6 +137,18 @@ export const makeRequest = async ({
         },
       });
     }
+
+    if (requestType === REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_GET) {
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
+      );
+      response = await authenticatedInstance.get(url.toString(), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
     return response.data;
   } catch (error) {
     return {

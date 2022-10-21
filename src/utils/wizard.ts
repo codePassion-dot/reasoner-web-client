@@ -16,6 +16,8 @@ import { REQUEST_TYPE, WIZARD_FIELDS } from "../constants/wizard";
 import { makeRequest } from "../services/wizard";
 import {
   ColumnsMappingType,
+  NewProblemSelectedColumns,
+  ResponseType,
   SelectedOrdinalColumnsType,
   WizardField,
 } from "../types/wizard";
@@ -227,6 +229,22 @@ export const getOrdinalColumnsFields = async (
         ordinalValue: value,
         mappedValue: null,
       })),
+    })) ?? []
+  );
+};
+
+export const getNewProblemFields = async (
+  accessToken: string
+): Promise<NewProblemSelectedColumns[]> => {
+  const { resource } = await makeRequest({
+    requestType: REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_GET,
+    accessToken,
+  });
+  return (
+    resource?.map(({ columnName, type, options }) => ({
+      columnName,
+      type,
+      options,
     })) ?? []
   );
 };
