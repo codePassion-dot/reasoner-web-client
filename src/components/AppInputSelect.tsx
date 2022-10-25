@@ -14,6 +14,7 @@ interface Props<T> {
   dependentFields?: DependentFields;
   children?: (item: ListItem<T> | null) => JSX.Element;
   commitedOption?: ListItem<T> | null;
+  parentCustomStyles?: string;
 }
 
 const AppInputSelect = <T extends string | boolean | JSX.Element>({
@@ -22,6 +23,7 @@ const AppInputSelect = <T extends string | boolean | JSX.Element>({
   name,
   children,
   commitedOption,
+  parentCustomStyles = "",
   ...rest
 }: Props<T>) => {
   useEffect(() => {
@@ -49,8 +51,14 @@ const AppInputSelect = <T extends string | boolean | JSX.Element>({
     <>
       <Listbox value={selectedOption} onChange={handleOptionChange} name={name}>
         {({ open }) => (
-          <div className="w-80 h-9 relative">
-            <Listbox.Button className="flex text-xl font-medium flex-row justify-between items-center py-1 px-4 w-full rounded-lg bg-cloud-burst shadow-lg shadow-cloud-burst/50  ">
+          <div
+            className={
+              parentCustomStyles.length
+                ? parentCustomStyles
+                : "w-80 h-9 relative"
+            }
+          >
+            <Listbox.Button className="flex h-full text-xl font-medium flex-row justify-between items-center py-1 px-4 w-full rounded-lg bg-cloud-burst shadow-lg shadow-cloud-burst/50  ">
               <div className="flex flex-row gap-4 items-center">
                 {rest.icon}
                 <span
