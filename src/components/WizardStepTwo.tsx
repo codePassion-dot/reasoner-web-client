@@ -24,6 +24,7 @@ const StepTwo: FC = () => {
       fields={fields}
       validationSchema={validationSchema}
       requestType={REQUEST_TYPE.SCHEMA}
+      apiVerb="patch"
       initialValues={{
         schema: "",
         table: "",

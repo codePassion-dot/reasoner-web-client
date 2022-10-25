@@ -16,6 +16,7 @@ interface Props<T> {
   validationSchema: T;
   fields: WizardField[];
   requestType: REQUEST_TYPE;
+  apiVerb?: "post" | "patch" | "get";
   initialValues: WizardFieldsType;
 }
 
@@ -23,6 +24,7 @@ const WizardFormGeneric = <T extends unknown>({
   validationSchema,
   fields,
   requestType,
+  apiVerb,
   initialValues,
 }: Props<T>) => {
   const router = useRouter();
@@ -59,6 +61,7 @@ const WizardFormGeneric = <T extends unknown>({
       requestType,
       body: values,
       accessToken: user.accessToken,
+      apiVerb,
     });
 
     if (!error) {

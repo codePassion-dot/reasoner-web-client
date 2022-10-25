@@ -52,7 +52,7 @@ const StepFive = () => {
     setSubmitting(true);
 
     const { error, resource } = await makeRequest({
-      requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+      requestType: steps[activeStepIdx].requestType,
       body: {
         selectedOrdinalColumns: Object.keys(values).reduce((acc, curr) => {
           return {

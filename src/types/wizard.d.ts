@@ -19,6 +19,7 @@ export type MakeRequestType = {
   requestType: REQUEST_TYPE;
   body?: WizardFieldsType;
   accessToken: string;
+  apiVerb?: "get" | "patch" | "post";
 };
 
 export type SchemaFieldsType = {

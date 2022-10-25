@@ -15,6 +15,9 @@ import WizardFormInput from "./WizardFormInput";
 
 const StepSix = () => {
   const [fields, setFields] = useState<NewProblemSelectedColumns[]>([]);
+  const [initialValues, setInitialValues] = useState<{
+    [key: string]: string | number;
+  }>({});
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -25,18 +28,28 @@ const StepSix = () => {
     const fetchFields = async () => {
       const columns = await getNewProblemFields(user.accessToken);
       setFields(columns);
+      setInitialValues(
+        columns.reduce((acc, curr) => ({ ...acc, [curr.columnName]: "" }), {})
+      );
     };
     fetchFields();
-  });
+  }, []);
+
   const handleSubmit = async (
-    values: any,
+    values: { [key: string]: string | number },
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     setSubmitting(true);
-
+    const requestBody = Object.entries(values).reduce(
+      (acc: { columnName: string; value: string | number }[], [key, value]) => [
+        ...acc,
+        { columnName: key, value },
+      ],
+      []
+    );
     const { error, resource } = await makeRequest({
       requestType: steps[activeStepIdx].requestType,
-      body: values,
+      body: requestBody,
       accessToken: user.accessToken,
     });
 
@@ -47,11 +60,15 @@ const StepSix = () => {
     setSubmitting(false);
   };
   return (
-    <Formik enableReinitialize onSubmit={handleSubmit} initialValues={fields}>
-      {({ values, isSubmitting }) => (
+    <Formik
+      enableReinitialize
+      onSubmit={handleSubmit}
+      initialValues={initialValues}
+    >
+      {({ isSubmitting, values }) => (
         <Form id="wizard">
           <div className="flex flex-col items-start gap-2">
-            {values.map(({ columnName, type, options }) => (
+            {fields.map(({ columnName, type, options }) => (
               <div
                 key={columnName}
                 className="flex flex-row justify-between gap-2 w-full"
@@ -60,14 +77,14 @@ const StepSix = () => {
                   {columnName}
                 </h2>
                 {options.length > 0 && (
-                  <AppInputSelect
+                  <Field
+                    as={AppInputSelect}
                     name={columnName}
                     options={options.map((option, idx) => ({
                       id: idx,
                       humanText: option,
                       value: option,
                     }))}
-                    onChange={() => {}}
                     icon={<BiColumns className="text-white" />}
                     placeholder="select value"
                   />
@@ -75,10 +92,11 @@ const StepSix = () => {
                 {!options.length && (
                   <Field
                     as={WizardFormInput}
-                    isSubmitting={isSubmitting}
                     name={columnName}
+                    value={values[columnName] ?? ""}
                     type="number"
                     placeholder="Enter value"
+                    isSubmitting={isSubmitting}
                     icon={<BiColumns className="text-white" />}
                     htmlFor={columnName}
                   />

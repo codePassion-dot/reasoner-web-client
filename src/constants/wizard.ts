@@ -12,8 +12,9 @@ export enum REQUEST_TYPE {
   COLUMNS_SELECTED_ORDINAL_GET = "get-problem-source-selected-ordinal-columns",
   COLUMNS_SELECTED_ORDINAL_POST = "save-problem-source-selected-ordinal-columns",
   NEW_PROBLEM_SELECTED_COLUMNS_GET = "get-problem-source-selected-columns-new-problem",
-  NEW_PROBLEM_SELECTED_COLUMNS_POST = "save-new-problem-selected-columns",
-  ALGORITHM = "save-algorithm", // TODO: change to save-algorithm when backend is ready
+  NEW_PROBLEM_SELECTED_COLUMNS_POST = "save-new-registry-selected-columns",
+  ALGORITHM_GET = "get-available-algorithms",
+  ALGORITHM_POST = "save-selected-algorithm",
 }
 
 export enum AUTH_FIELDS {
