@@ -19,6 +19,7 @@ export type MakeRequestType = {
   requestType: REQUEST_TYPE;
   body?: WizardFieldsType;
   accessToken: string;
+  apiVerb?: "get" | "patch" | "post";
 };
 
 export type SchemaFieldsType = {
@@ -115,6 +116,12 @@ export type FieldType = {
     | AppInputSelectType
     | AppInputAutocompleteType;
   rest: Partial<WizardField>;
+};
+
+export type NewProblemSelectedColumns = {
+  columnName: string;
+  type: string;
+  options: string[];
 };
 
 export type WizardFieldsType =

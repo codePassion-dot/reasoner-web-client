@@ -52,7 +52,7 @@ const StepFive = () => {
     setSubmitting(true);
 
     const { error, resource } = await makeRequest({
-      requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+      requestType: steps[activeStepIdx].requestType,
       body: {
         selectedOrdinalColumns: Object.keys(values).reduce((acc, curr) => {
           return {
@@ -126,6 +126,7 @@ const StepFive = () => {
                   value: key,
                   humanText: key,
                 }))}
+                parentCustomStyles="w-full h-9 relative"
                 name="columnNames"
                 onChange={() => {}}
                 icon={<BiColumns className="text-white" />}

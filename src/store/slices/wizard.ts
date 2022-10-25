@@ -8,6 +8,7 @@ interface StepState {
   component: string;
   idx: number;
   requestType: REQUEST_TYPE;
+  apiVerb?: "get" | "patch" | "post";
 }
 
 const initialState: {
@@ -30,6 +31,7 @@ const initialState: {
       component: "stepTwo",
       idx: 1,
       requestType: REQUEST_TYPE.SCHEMA,
+      apiVerb: "patch",
     },
     {
       key: "COLUMNS",
@@ -54,6 +56,22 @@ const initialState: {
       component: "stepFive",
       idx: 4,
       requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+    },
+    {
+      key: "NEW_PROBLEM_SELECT_COLUMNS",
+      label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+      isDone: false,
+      component: "stepSix",
+      idx: 5,
+      requestType: REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_POST,
+    },
+    {
+      key: "ALGORITHM",
+      label: STEP_NAMES.ALGORITHM,
+      isDone: false,
+      component: "stepSeven",
+      idx: 6,
+      requestType: REQUEST_TYPE.ALGORITHM_POST,
     },
   ],
   activeStepIdx: 0,

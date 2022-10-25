@@ -16,7 +16,7 @@ const WizardFormInput: FC<Props> = (props) => {
       htmlFor={props.htmlFor}
       className="flex flex-row text-xl font-medium"
     >
-      <div className="flex flex-row gap-4 justify-start items-center py-1 pl-4 rounded-lg bg-cloud-burst shadow-lg shadow-cloud-burst/50">
+      <div className="flex flex-row gap-4 justify-start w-80 h-9  items-center py-1 pl-4 rounded-lg bg-cloud-burst shadow-lg shadow-cloud-burst/50">
         {props.icon}
         <input
           className="text-white rounded-xl outline-none bg-cloud-burst placeholder:text-slate-500 placeholder:text-base"
