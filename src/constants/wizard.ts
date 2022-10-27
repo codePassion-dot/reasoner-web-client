@@ -14,7 +14,7 @@ export enum REQUEST_TYPE {
   NEW_PROBLEM_SELECTED_COLUMNS_GET = "get-problem-source-selected-columns-new-problem",
   NEW_PROBLEM_SELECTED_COLUMNS_POST = "save-new-registry-selected-columns",
   ALGORITHM_GET = "get-available-algorithms",
-  ALGORITHM_POST = "save-selected-algorithm",
+  ALGORITHM_POST = "save-problem-algorithm",
 }
 
 export enum AUTH_FIELDS {
