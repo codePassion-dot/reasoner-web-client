@@ -37,7 +37,7 @@ const StepSeven = () => {
     const { algorithm } = values;
     const { error, resource } = await makeRequest({
       requestType: steps[activeStepIdx].requestType,
-      body: algorithm,
+      body: { algorithmName: algorithm },
       accessToken: user.accessToken,
     });
 
@@ -51,7 +51,7 @@ const StepSeven = () => {
   return (
     <Formik initialValues={{}} onSubmit={handleSubmit}>
       {() => (
-        <Form>
+        <Form id="wizard">
           <Field
             as={AppInputSelect}
             options={fields.map((algoName, idx) => ({
