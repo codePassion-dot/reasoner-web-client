@@ -43,6 +43,7 @@ export const STEP_NAMES: { [key: string]: string } = {
   COLUMNS_TYPE: "Column Type",
   SELECTED_ORDINAL_COLUMNS: "Ordinal Columns",
   ALGORITHM: "Algorithm Selection",
+  NEW_PROBLEM_SELECT_COLUMNS: "New Problem",
 } as const;
 
 export const STEP_DETAILS: StepDetailsType = {
