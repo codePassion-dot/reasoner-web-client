@@ -184,6 +184,11 @@ export const getSelectedColumnsFields = async (
       options: [],
       droppableId: "boolean-columns",
     },
+    {
+      sectionTitle: "Literal columns",
+      options: [],
+      droppableId: "literal-columns",
+    },
   ];
 };
 

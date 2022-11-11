@@ -101,7 +101,7 @@ const WizardStepDragAndDrop: FC<Props> = ({ sections, requestType }) => {
                     reOrganizeSections(item, values.sections, setFieldValue)
                   }
                 >
-                  <div className="flex flex-row h-96">
+                  <div className="flex flex-row h-[35rem]">
                     <WizardStepDragAndDropSection
                       sections={values.sections}
                       idx={0}

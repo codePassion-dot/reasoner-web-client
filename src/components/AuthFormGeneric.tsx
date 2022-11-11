@@ -51,8 +51,9 @@ const AuthFormGeneric = <T extends unknown>({
     setSubmitting(false);
     if (error) return;
 
-    if (requestType !== REQUEST_TYPE.SIGN_IN)
+    if (requestType !== REQUEST_TYPE.SIGN_IN) {
       return router.push("/auth/sign-in");
+    }
 
     if (isAccessTokenResource(resource)) {
       dispatch(

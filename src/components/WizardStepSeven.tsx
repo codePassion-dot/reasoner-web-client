@@ -59,7 +59,7 @@ const StepSeven = () => {
               humanText: algoName,
               value: algoName,
             }))}
-            parentCustomStyles="w-64 h-9 relative"
+            parentCustomStyles="w-fit h-9 relative"
             name="algorithm"
             icon={<BiColumns className="text-white" />}
             placeholder="select algorithm"
