@@ -1,3 +1,4 @@
+import { mapValues } from "radash";
 import {
   BiLock,
   BiUser,
@@ -100,6 +101,50 @@ export const getSchemaValidation = () => {
     schema: Yup.string().required("Required"),
     table: Yup.string().required("Required"),
   });
+};
+
+export const getColumnsFoundValidation = () => {
+  return Yup.object().shape({
+    sections: Yup.array().of(
+      Yup.object().shape({
+        droppableId: Yup.string(),
+        options: Yup.array().when("droppableId", {
+          is: (droppableId: string) =>
+            droppableId === "predicting-factors" ||
+            droppableId === "goal-factor",
+          then: (schema) => schema.min(1, "At least one column is required"),
+          otherwise: (schema) => schema.min(0),
+        }),
+        sectionTitle: Yup.string().required("Required"),
+      })
+    ),
+  });
+};
+
+export const getColumnsTypesValidation = () => {
+  return Yup.object().shape({
+    sections: Yup.array().of(
+      Yup.object().shape({
+        droppableId: Yup.string(),
+        options: Yup.array().when("droppableId", {
+          is: (droppableId: string) => droppableId === "selected-columns",
+          then: (schema) => schema.max(0, "At least one column is required"),
+          otherwise: (schema) => schema.min(0),
+        }),
+        sectionTitle: Yup.string().required("Required"),
+      })
+    ),
+  });
+};
+
+export const getNewProblemValidation = () => {
+  return Yup.lazy((values) =>
+    Yup.object(
+      mapValues(values, (value, key) => {
+        return Yup.string().required("Required");
+      })
+    )
+  );
 };
 
 const getSchemas = async (accessToken: string) => {
