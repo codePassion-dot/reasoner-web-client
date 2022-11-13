@@ -28,10 +28,11 @@ export const makeRequest = async ({
         response = await authenticatedInstance.patch(url.toString(), body, {
           headers,
         });
+      } else {
+        response = await authenticatedInstance.post(url.toString(), body, {
+          headers,
+        });
       }
-      response = await authenticatedInstance.post(url.toString(), body, {
-        headers,
-      });
     } else {
       const url = new URL(
         `${process.env.NEXT_PUBLIC_API_URL}/${domain}/${requestType}`
