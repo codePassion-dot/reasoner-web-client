@@ -19,6 +19,7 @@ import StepFour from "../../components/WizardStepFour";
 import StepFive from "../../components/WizardStepFive";
 import StepSix from "../../components/WizardStepSix";
 import StepSeven from "../../components/WizardStepSeven";
+import StepEight from "../../components/WizardStepEight";
 
 const Step: NextPage = () => {
   const router = useRouter();
@@ -37,6 +38,7 @@ const Step: NextPage = () => {
     stepFive: <StepFive />,
     stepSix: <StepSix />,
     stepSeven: <StepSeven />,
+    stepEight: <StepEight />,
   }; //disgusting
 
   useEffect(() => {
@@ -54,12 +56,16 @@ const Step: NextPage = () => {
       step={stepKey}
       idxActiveStep={activeStepIdx}
     >
-      <div className="flex flex-row gap-4">
-        <>
-          <WizardBoxDetail step={stepKey} />
-          {components[steps[activeStepIdx].component]}
-        </>
-      </div>
+      {activeStepIdx !== 7 ? (
+        <div className="flex flex-row gap-4">
+          <>
+            <WizardBoxDetail step={stepKey} />
+            {components[steps[activeStepIdx].component]}
+          </>
+        </div>
+      ) : (
+        <>{components[steps[activeStepIdx].component]}</>
+      )}
     </WizardLayout>
   );
 };

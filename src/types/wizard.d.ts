@@ -17,6 +17,7 @@ export type DatabaseFieldsType = {
 
 export type MakeRequestType = {
   requestType: REQUEST_TYPE;
+  domain?: string;
   body?: WizardFieldsType;
   accessToken: string;
   apiVerb?: "get" | "patch" | "post";
@@ -39,7 +40,10 @@ export type AlgorithmFieldsType = {
 };
 
 export type ResponseType = {
-  resource: { [key: string]: string & string[] }[] | null;
+  resource:
+    | { [key: string]: string & string[] }[]
+    | Record<string, string | string[] | Record<string, string>[]>
+    | null;
   error: ErrorResponseType;
 };
 

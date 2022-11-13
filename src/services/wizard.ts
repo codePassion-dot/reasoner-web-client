@@ -12,8 +12,8 @@ export const makeRequest = async ({
   body,
   accessToken,
   apiVerb,
+  domain = "parameterizer",
 }: MakeRequestType): Promise<ResponseType> => {
-  const domain = "parameterizer";
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,

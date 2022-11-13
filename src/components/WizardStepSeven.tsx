@@ -24,7 +24,9 @@ const StepSeven = () => {
         accessToken: user.accessToken,
         requestType: REQUEST_TYPE.ALGORITHM_GET,
       });
-      setFields(resource?.map((algo) => algo.name) ?? []);
+      if (Array.isArray(resource)) {
+        setFields(resource?.map((algo) => algo.name) ?? []);
+      }
     };
     fetchFields();
   }, []);
@@ -59,7 +61,7 @@ const StepSeven = () => {
               humanText: algoName,
               value: algoName,
             }))}
-            parentCustomStyles="w-fit h-9 relative"
+            parentCustomStyles="w-72 h-9 relative"
             name="algorithm"
             icon={<BiColumns className="text-white" />}
             placeholder="select algorithm"
