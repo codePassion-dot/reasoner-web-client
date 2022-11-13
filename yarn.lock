@@ -3334,6 +3334,11 @@ quick-lru@^5.1.1:
   resolved "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+radash@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/radash/-/radash-9.1.0.tgz#96083cc705a26832eab5ba01d2ae9474a5c53a86"
+  integrity sha512-wBVCd7celVvZE5hKU5OXcBNpkM6yw17ao+xWCgviPLqBAJalsh68z6+mbPJ8pjI/YIvOGKyQvBTAl7kJnJbREA==
+
 raf-schd@^4.0.3:
   version "4.0.3"
   resolved "https://registry.npmjs.org/raf-schd/-/raf-schd-4.0.3.tgz"
