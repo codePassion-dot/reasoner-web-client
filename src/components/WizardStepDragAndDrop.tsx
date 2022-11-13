@@ -12,12 +12,13 @@ import { handleNext } from "../store/slices/wizard";
 import { ColumnsMappingType } from "../types/wizard";
 import WizardStepDragAndDropSection from "./WizardStepDragAndDropSection";
 
-interface Props {
+interface Props<T> {
   sections: ColumnsMappingType[];
   requestType: REQUEST_TYPE;
+  validationSchema?: T;
 }
 
-const WizardStepDragAndDrop: FC<Props> = ({ sections, requestType }) => {
+const WizardStepDragAndDrop = <T extends unknown>({ sections, requestType, validationSchema }: Props<T>) => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -90,6 +91,7 @@ const WizardStepDragAndDrop: FC<Props> = ({ sections, requestType }) => {
       enableReinitialize
       initialValues={{ sections }}
       onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
       {({ values, setFieldValue }) => {
         return (

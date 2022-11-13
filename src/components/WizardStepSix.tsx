@@ -2,14 +2,13 @@ import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BiColumns } from "react-icons/bi";
-import { REQUEST_TYPE } from "../constants/wizard";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
 import { handleNext } from "../store/slices/wizard";
 import { NewProblemSelectedColumns } from "../types/wizard";
-import { getNewProblemFields } from "../utils/wizard";
+import { getNewProblemFields, getNewProblemValidation } from "../utils/wizard";
 import AppInputSelect from "./AppInputSelect";
 import WizardFormInput from "./WizardFormInput";
 
@@ -23,6 +22,7 @@ const StepSix = () => {
   const router = useRouter();
   const steps = useAppSelector(selectSteps);
   const activeStepIdx = useAppSelector(selectActiveStepIdx);
+  const validationSchema = getNewProblemValidation();
 
   useEffect(() => {
     const fetchFields = async () => {
@@ -47,7 +47,7 @@ const StepSix = () => {
       ],
       []
     );
-    const { error, resource } = await makeRequest({
+    const { error } = await makeRequest({
       requestType: steps[activeStepIdx].requestType,
       body: requestBody,
       accessToken: user.accessToken,
@@ -64,11 +64,13 @@ const StepSix = () => {
       enableReinitialize
       onSubmit={handleSubmit}
       initialValues={initialValues}
+      validationSchema={validationSchema}
     >
-      {({ isSubmitting, values }) => (
+      {({ isSubmitting, values }) =>
+      (
         <Form id="wizard">
           <div className="flex flex-col items-start gap-2">
-            {fields.map(({ columnName, type, options }) => (
+            {fields.map(({ columnName, options }) => (
               <div
                 key={columnName}
                 className="flex flex-row justify-between gap-2 w-full"
@@ -105,7 +107,8 @@ const StepSix = () => {
             ))}
           </div>
         </Form>
-      )}
+      )
+      }
     </Formik>
   );
 };
