@@ -107,11 +107,14 @@ const getSchemas = async (accessToken: string) => {
     requestType: REQUEST_TYPE.SCHEMA_GET,
     accessToken,
   });
-  return resource?.map(({ schemaName }, index) => ({
-    id: index,
-    humanText: schemaName,
-    value: schemaName,
-  }));
+  if (resource && Array.isArray(resource)) {
+    return resource.map(({ schemaName }, index) => ({
+      id: index,
+      humanText: schemaName,
+      value: schemaName,
+    }));
+  }
+  return [];
 };
 
 export const getSchemaFields = async (
@@ -149,7 +152,10 @@ const getColumns = async (accessToken: string): Promise<string[]> => {
     accessToken: accessToken,
   });
 
-  return resource?.map(({ columnName }) => columnName) ?? [];
+  if (resource && Array.isArray(resource)) {
+    return resource.map(({ columnName }) => columnName);
+  }
+  return [];
 };
 
 const getColumnsSelected = async (accessToken: string): Promise<string[]> => {
@@ -157,7 +163,10 @@ const getColumnsSelected = async (accessToken: string): Promise<string[]> => {
     requestType: REQUEST_TYPE.COLUMNS_TYPE_GET,
     accessToken: accessToken,
   });
-  return resource?.map(({ columnName }) => columnName) ?? [];
+  if (resource && Array.isArray(resource)) {
+    return resource.map(({ columnName }) => columnName);
+  }
+  return [];
 };
 
 export const getSelectedColumnsFields = async (
@@ -227,15 +236,16 @@ export const getOrdinalColumnsFields = async (
 ): Promise<SelectedOrdinalColumnsType[]> => {
   const ordinalColumns = await getSelectedOrdinalColumns(accessToken);
 
-  return (
-    ordinalColumns?.map((ordinalColumn) => ({
+  if (ordinalColumns && Array.isArray(ordinalColumns)) {
+    return ordinalColumns?.map((ordinalColumn) => ({
       columnName: ordinalColumn.columnName,
       mappedValues: ordinalColumn.values.map((value, idx) => ({
         ordinalValue: value,
         mappedValue: null,
       })),
-    })) ?? []
-  );
+    }));
+  }
+  return [];
 };
 
 export const getNewProblemFields = async (
@@ -245,11 +255,55 @@ export const getNewProblemFields = async (
     requestType: REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_GET,
     accessToken,
   });
-  return (
-    resource?.map(({ columnName, type, options }) => ({
+  if (resource && Array.isArray(resource)) {
+    return resource.map(({ columnName, type, options }) => ({
       columnName,
       type,
       options,
-    })) ?? []
-  );
+    }));
+  }
+  return [];
+};
+
+export const getResults = async (accessToken: string) => {
+  const { resource } = await makeRequest({
+    requestType: REQUEST_TYPE.SOLUTION_SUMMARY,
+    accessToken,
+    domain: "solver",
+  });
+
+  if (resource && !Array.isArray(resource)) {
+    return Object.entries(resource).reduce(
+      (acc, [key, value]) => {
+        if (key === "initialProblem") {
+          if (typeof value !== "string") {
+            return {
+              ...acc,
+              [key]: value
+                .map((column) =>
+                  typeof column !== "string"
+                    ? `${column.name}: ${column.value}`
+                    : ""
+                )
+                .filter(Boolean),
+            };
+          }
+          return acc;
+        }
+        if (key === "umbral" || key === "result") {
+          return {
+            ...acc,
+            [key]: Object.entries(value).map(([internalKey, internalValue]) =>
+              key === "umbral"
+                ? `${internalKey}: ${internalValue * 100}%`
+                : `${internalKey}: ${internalValue}`
+            ),
+          };
+        }
+        return acc;
+      },
+      { initialProblem: [""], umbral: [""], result: [""] }
+    );
+  }
+  return { initialProblem: [""], umbral: [""], result: [""] };
 };

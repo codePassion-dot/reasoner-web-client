@@ -64,12 +64,15 @@ const AppInputAutocomplete = <T extends string | boolean | JSX.Element>({
           body: { [name]: option.humanText },
           accessToken: user.accessToken,
         });
-        const newOptions: ListItem<T>[] =
-          resource?.map((item, index) => ({
-            id: index,
-            value: item[`${field}Name`] as T & T[],
-            humanText: item[`${field}Name`],
-          })) ?? [];
+        let newOptions: ListItem<T>[] = [];
+        if (Array.isArray(resource)) {
+          newOptions =
+            resource?.map((item, index) => ({
+              id: index,
+              value: item[`${field}Name`] as T & T[],
+              humanText: item[`${field}Name`],
+            })) ?? [];
+        }
         setItemOptions(field, newOptions);
       });
     }
