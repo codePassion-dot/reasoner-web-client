@@ -15,6 +15,7 @@ export enum REQUEST_TYPE {
   NEW_PROBLEM_SELECTED_COLUMNS_POST = "save-new-registry-selected-columns",
   ALGORITHM_GET = "get-available-algorithms",
   ALGORITHM_POST = "save-problem-algorithm",
+  SOLUTION_SUMMARY = "solve",
 }
 
 export enum AUTH_FIELDS {
@@ -44,6 +45,7 @@ export const STEP_NAMES: { [key: string]: string } = {
   SELECTED_ORDINAL_COLUMNS: "Ordinal Columns",
   ALGORITHM: "Algorithm Selection",
   NEW_PROBLEM_SELECT_COLUMNS: "New Problem",
+  SOLUTION_SUMMARY: "Solution Summary",
 } as const;
 
 export const STEP_DETAILS: StepDetailsType = {
@@ -74,5 +76,9 @@ export const STEP_DETAILS: StepDetailsType = {
   ALGORITHM: {
     title: "algorithm to find the neighbor",
     description: "Select the algorithm to use",
+  },
+  SOLUTION_SUMMARY: {
+    title: "solution summary",
+    description: "summary of the solution",
   },
 } as const;

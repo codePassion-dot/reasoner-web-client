@@ -73,6 +73,14 @@ const initialState: {
       idx: 6,
       requestType: REQUEST_TYPE.ALGORITHM_POST,
     },
+    {
+      key: "SOLUTION_SUMMARY",
+      label: STEP_NAMES.SOLUTION_SUMMARY,
+      isDone: true,
+      component: "stepEight",
+      idx: 7,
+      requestType: REQUEST_TYPE.SOLUTION_SUMMARY,
+    },
   ],
   activeStepIdx: 0,
 };
