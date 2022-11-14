@@ -1,14 +1,13 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { FieldArray, Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { FC, useEffect } from "react";
 import { BiArrowToRight } from "react-icons/bi";
-import { REQUEST_TYPE } from "../constants/wizard";
+import { REQUEST_TYPE, STEP_NAMES } from "../constants/wizard";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
-import { handleNext } from "../store/slices/wizard";
+import { addStepAt, deleteStep, handleNext } from "../store/slices/wizard";
 import { ColumnsMappingType } from "../types/wizard";
 import WizardStepDragAndDropSection from "./WizardStepDragAndDropSection";
 
@@ -18,7 +17,11 @@ interface Props<T> {
   validationSchema?: T;
 }
 
-const WizardStepDragAndDrop = <T extends unknown>({ sections, requestType, validationSchema }: Props<T>) => {
+const WizardStepDragAndDrop = <T extends unknown>({
+  sections,
+  requestType,
+  validationSchema,
+}: Props<T>) => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -79,10 +82,38 @@ const WizardStepDragAndDrop = <T extends unknown>({ sections, requestType, valid
       accessToken: user.accessToken,
     });
 
-    if (!error) {
-      dispatch(handleNext());
-      router.push(`/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`);
+    const ordinalSectionIsNotEmpty = values.sections.find(
+      (section) => section.droppableId === "ordinal-columns"
+    )?.options.length;
+
+    if (error) return;
+    let route = `/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`;
+    if (ordinalSectionIsNotEmpty) {
+      const newStep = {
+        key: "SELECTED_ORDINAL_COLUMNS",
+        label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+        isDone: false,
+        component: "stepFive",
+        idx: 4,
+        requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+      };
+      dispatch(
+        addStepAt({
+          idx: activeStepIdx + 1,
+          step: newStep,
+        })
+      );
+      route = `/wizard/${newStep.key.toLowerCase()}`;
+    } else {
+      if (ordinalSectionIsNotEmpty === 0) {
+        dispatch(deleteStep({ stepKey: "SELECTED_ORDINAL_COLUMNS" }));
+        route = `/wizard/${steps
+          .find((step) => step.key === "NEW_PROBLEM_SELECT_COLUMNS")
+          ?.key.toLowerCase()}`;
+      }
     }
+    router.push(route);
+    dispatch(handleNext());
     setSubmitting(false);
   };
 
