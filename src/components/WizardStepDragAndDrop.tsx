@@ -7,7 +7,11 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { makeRequest } from "../services/wizard";
 import { selectUser } from "../store/selectors/users";
 import { selectActiveStepIdx, selectSteps } from "../store/selectors/wizard";
-import { addStepAt, deleteStep, handleNext } from "../store/slices/wizard";
+import {
+  handleNext,
+  setStepsWithOrdinalStep,
+  setStepsWithoutOrdinalStep,
+} from "../store/slices/wizard";
 import { ColumnsMappingType } from "../types/wizard";
 import WizardStepDragAndDropSection from "./WizardStepDragAndDropSection";
 
@@ -89,24 +93,11 @@ const WizardStepDragAndDrop = <T extends unknown>({
     if (error) return;
     let route = `/wizard/${steps[activeStepIdx + 1].key.toLowerCase()}`;
     if (ordinalSectionIsNotEmpty) {
-      const newStep = {
-        key: "SELECTED_ORDINAL_COLUMNS",
-        label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
-        isDone: false,
-        component: "stepFive",
-        idx: 4,
-        requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
-      };
-      dispatch(
-        addStepAt({
-          idx: activeStepIdx + 1,
-          step: newStep,
-        })
-      );
-      route = `/wizard/${newStep.key.toLowerCase()}`;
+      dispatch(setStepsWithOrdinalStep());
+      route = `/wizard/${"SELECTED_ORDINAL_COLUMNS".toLowerCase()}`;
     } else {
       if (ordinalSectionIsNotEmpty === 0) {
-        dispatch(deleteStep({ stepKey: "SELECTED_ORDINAL_COLUMNS" }));
+        dispatch(setStepsWithoutOrdinalStep());
         route = `/wizard/${steps
           .find((step) => step.key === "NEW_PROBLEM_SELECT_COLUMNS")
           ?.key.toLowerCase()}`;

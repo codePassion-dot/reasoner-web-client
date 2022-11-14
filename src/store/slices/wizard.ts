@@ -77,6 +77,21 @@ const initialState: {
   activeStepIdx: 0,
 };
 
+const stepsWithOrdinalStep = [
+  ...initialState.steps.slice(0, 4),
+  {
+    key: "SELECTED_ORDINAL_COLUMNS",
+    label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+    isDone: false,
+    component: "stepFive",
+    idx: 4,
+    requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
+  },
+  ...initialState.steps
+    .slice(4)
+    .map((step) => ({ ...step, idx: step.idx + 1 })),
+];
+
 export const wizardSlice = createSlice({
   name: "wizard",
   initialState,
@@ -113,35 +128,12 @@ export const wizardSlice = createSlice({
         }
       }
     },
-    deleteStep: (state, action: PayloadAction<{ stepKey: string }>) => {
-      const { stepKey } = action.payload;
-      const idx = state.steps.findIndex((step) => step.key === stepKey);
-      if (idx > -1) {
-        state.steps.splice(idx, 1);
-        const stepsAfterDeleted = state.steps.slice(idx);
-        state.steps = [
-          ...state.steps.slice(0, idx),
-          ...stepsAfterDeleted.map((step, idx) => {
-            step.idx -= 1;
-            return step;
-          }),
-        ];
-      }
+    setStepsWithOrdinalStep: (state) => {
+      state.steps = stepsWithOrdinalStep;
     },
-    addStepAt: (
-      state,
-      action: PayloadAction<{ step: StepState; idx: number }>
-    ) => {
-      const { step: stepToAdd, idx: idxToAdd } = action.payload;
-      state.steps.splice(idxToAdd, 0, stepToAdd);
-      const stepsAfterAdded = state.steps.slice(idxToAdd + 1);
-      state.steps = [
-        ...state.steps.slice(0, idxToAdd + 1),
-        ...stepsAfterAdded.map((step, idx) => {
-          step.idx += 1;
-          return step;
-        }),
-      ];
+
+    setStepsWithoutOrdinalStep: (state) => {
+      state.steps = initialState.steps;
     },
   },
 });
@@ -152,8 +144,8 @@ export const {
   setInitialActiveStep,
   handleNext,
   handleBack,
-  deleteStep,
-  addStepAt,
+  setStepsWithOrdinalStep,
+  setStepsWithoutOrdinalStep,
 } = wizardSlice.actions;
 
 export default wizardSlice.reducer;
