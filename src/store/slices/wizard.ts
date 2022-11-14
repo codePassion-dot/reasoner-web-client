@@ -50,19 +50,11 @@ const initialState: {
       requestType: REQUEST_TYPE.COLUMNS_TYPE_POST,
     },
     {
-      key: "SELECTED_ORDINAL_COLUMNS",
-      label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
-      isDone: false,
-      component: "stepFive",
-      idx: 4,
-      requestType: REQUEST_TYPE.COLUMNS_SELECTED_ORDINAL_POST,
-    },
-    {
       key: "NEW_PROBLEM_SELECT_COLUMNS",
-      label: STEP_NAMES.SELECTED_ORDINAL_COLUMNS,
+      label: STEP_NAMES.NEW_PROBLEM_SELECT_COLUMNS,
       isDone: false,
       component: "stepSix",
-      idx: 5,
+      idx: 4,
       requestType: REQUEST_TYPE.NEW_PROBLEM_SELECTED_COLUMNS_POST,
     },
     {
@@ -70,7 +62,7 @@ const initialState: {
       label: STEP_NAMES.ALGORITHM,
       isDone: false,
       component: "stepSeven",
-      idx: 6,
+      idx: 5,
       requestType: REQUEST_TYPE.ALGORITHM_POST,
     },
     {
@@ -78,7 +70,7 @@ const initialState: {
       label: STEP_NAMES.SOLUTION_SUMMARY,
       isDone: true,
       component: "stepEight",
-      idx: 7,
+      idx: 6,
       requestType: REQUEST_TYPE.SOLUTION_SUMMARY,
     },
   ],
@@ -121,6 +113,36 @@ export const wizardSlice = createSlice({
         }
       }
     },
+    deleteStep: (state, action: PayloadAction<{ stepKey: string }>) => {
+      const { stepKey } = action.payload;
+      const idx = state.steps.findIndex((step) => step.key === stepKey);
+      if (idx > -1) {
+        state.steps.splice(idx, 1);
+        const stepsAfterDeleted = state.steps.slice(idx);
+        state.steps = [
+          ...state.steps.slice(0, idx),
+          ...stepsAfterDeleted.map((step, idx) => {
+            step.idx -= 1;
+            return step;
+          }),
+        ];
+      }
+    },
+    addStepAt: (
+      state,
+      action: PayloadAction<{ step: StepState; idx: number }>
+    ) => {
+      const { step: stepToAdd, idx: idxToAdd } = action.payload;
+      state.steps.splice(idxToAdd, 0, stepToAdd);
+      const stepsAfterAdded = state.steps.slice(idxToAdd + 1);
+      state.steps = [
+        ...state.steps.slice(0, idxToAdd + 1),
+        ...stepsAfterAdded.map((step, idx) => {
+          step.idx += 1;
+          return step;
+        }),
+      ];
+    },
   },
 });
 
@@ -130,6 +152,8 @@ export const {
   setInitialActiveStep,
   handleNext,
   handleBack,
+  deleteStep,
+  addStepAt,
 } = wizardSlice.actions;
 
 export default wizardSlice.reducer;
